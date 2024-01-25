@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
 
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -30,7 +31,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    PathPlannerServer.startServer(5811);
+    PathPlannerServer.startServer();
   }
 
   /**
@@ -46,6 +47,8 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    robotContainer.checkLimitSwitch();
+    robotContainer.encoderTest();
     CommandScheduler.getInstance().run();
   }
 

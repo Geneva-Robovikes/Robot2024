@@ -15,5 +15,23 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kControlControllerPort = 1;
+    public static final double controllerDeadzone = 0.1;
   }
+
+  public static final int falconEncoderResolution = 2048;
+  public static final double swerveWheelDiameter = 0.09677;
+  public static final double swerveDriveGearRatio = 6.75;
+  public static final double swerveTurnGearRatio = 150.0 / 7.0;
+  public static final double moduleMaxAngularVelocity = Math.PI;
+  public static final double moduleMaxAngularAcceleration = 2 * Math.PI;
+  public static final double maxModuleVelocity = 1; 
+  /*this variable changes robot speek 
+  max speed is 16. speed is in m/s. do not make robot go too fast*/
+
+  public static final double maxModuleAcceleration = 2;
+  public static final double maxTranlationalDriveSpeed = 1.5;
+  public static final double maxRotationalDriveSpeed = Math.PI;
+  public static final double controllerDeadzone = 0.1;
+
 }
