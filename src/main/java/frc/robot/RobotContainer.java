@@ -5,8 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
