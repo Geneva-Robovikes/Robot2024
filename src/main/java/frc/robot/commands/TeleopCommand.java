@@ -3,12 +3,13 @@ package frc.robot.commands;
 import java.io.Console;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TeleopCommand {
+public class TeleopCommand extends CommandBase {
     private final DriveSubsystem driveSubsystem;
     private final CommandXboxController driveController;
 
