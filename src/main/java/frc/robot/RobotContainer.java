@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -34,7 +35,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   /* ~~~Subsystems~~~ */
-  private final DriveSubsystem driveSubsystemriveSubsystemSubsystem = new DriveSubsystem();
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
   /* ~~~~Commands~~~~ */
 
@@ -83,7 +84,9 @@ public class RobotContainer {
   }
 
   public Command getTeleopCommand(){
-    return new ParallelCommandGroup(/*TODO */);
+    return new ParallelCommandGroup(
+      new TeleopCommand(driveSubsystem, driverController)
+    );
   }
 
   /**
