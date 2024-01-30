@@ -1,15 +1,13 @@
 package frc.robot.commands;
 
-import java.io.Console;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TeleopCommand extends CommandBase {
+public class TeleopCommand extends Command {
     private final DriveSubsystem driveSubsystem;
     private final CommandXboxController driveController;
 
