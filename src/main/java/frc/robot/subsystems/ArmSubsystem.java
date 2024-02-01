@@ -14,5 +14,17 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import frc.robot.commands.StopCommand;
 
 public ArmSubsystem extends SubsystemBase{
+    TalonFX leftArmMotor;
+    TalonFX rightArmMotor;
+    TalonFX extensionMotor;
 
+    public ArmSubsystem(){
+        leftArmMotor = new TalonFX(8);
+        rightArmMotor = new TalonFX(9);
+        extensionMotor new TalonFX(10);
+
+
+        leftArmMotor.setNeutralMode(neutralMode.Brake);
+        rightArmMotor.setNuetralMode(neutralMode.Brake);
+    }
 }
