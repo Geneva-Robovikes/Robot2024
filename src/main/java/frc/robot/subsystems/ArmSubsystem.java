@@ -27,4 +27,7 @@ public ArmSubsystem extends SubsystemBase{
         leftArmMotor.setNeutralMode(neutralMode.Brake);
         rightArmMotor.setNuetralMode(neutralMode.Brake);
     }
+
+    //sets speed for the extension motor
+    public void setExtensionMotor()
 }
