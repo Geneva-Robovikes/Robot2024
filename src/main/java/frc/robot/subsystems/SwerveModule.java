@@ -101,16 +101,16 @@ public class SwerveModule {
     }
 
     private double getDriveVelocity(){
-        return driveMotor.getPosition().getValue() / Constants.swerveDriveGearRatio /Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
+        return driveMotor.getPosition().getValueAsDouble() / Constants.swerveDriveGearRatio /Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
     }
 
     private double getDrivenDistance(){
-        return driveMotor.getPosition().getValue() / Constants.swerveDriveGearRatio /Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
+        return driveMotor.getPosition().getValueAsDouble() / Constants.swerveDriveGearRatio /Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
 
     }
 
     private double getCurrentAngle(){
-        return turnMotor.getPosition().getValue() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
+        return turnMotor.getPosition().getValueAsDouble() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
     }
 
 
