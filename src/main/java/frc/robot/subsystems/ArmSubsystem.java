@@ -29,5 +29,7 @@ public ArmSubsystem extends SubsystemBase{
     }
 
     //sets speed for the extension motor
-    public void setExtensionMotor()
+    public void setExtensionMotor(double speed){
+        extensionMotor.set(speed);
+    }
 }
