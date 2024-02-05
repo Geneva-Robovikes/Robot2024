@@ -12,13 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import frc.robot.commands.StopCommand;
-
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -31,10 +27,10 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backLeftLocation = new Translation2d(-0.3048, 0.3048);
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
-  SwerveModule frontLeftModule = new SwerveModule(2, 3, false, true);
-  SwerveModule frontRightModule = new SwerveModule(6, 7, false, true);
-  SwerveModule backLeftModule = new SwerveModule(0, 1, false, true);
-  SwerveModule backRightModule = new SwerveModule(4, 5, false, true);
+  SwerveModule frontLeftModule = new SwerveModule(41, 42, false, true);
+  SwerveModule frontRightModule = new SwerveModule(31, 32, false, true);
+  SwerveModule backLeftModule = new SwerveModule(11, 12, false, true);
+  SwerveModule backRightModule = new SwerveModule(21, 22, false, true);
 
 
   public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
