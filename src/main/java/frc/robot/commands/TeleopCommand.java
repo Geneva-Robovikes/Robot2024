@@ -18,6 +18,8 @@ public class TeleopCommand extends Command {
     public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController driveController){
         this.driveSubsystem = driveSubsystem;
         this.driveController = driveController;
+        System.out.println("Initialized TeleopCommand");
+        
         addRequirements(driveSubsystem);
     }
 
@@ -30,6 +32,7 @@ public class TeleopCommand extends Command {
 
         // If the right controller is pressed, drive switches to robot centric
         if(rightTrigger > 0.5) {
+            System.out.println("Input recieved TeleopCommand fieldcentric");
             isFieldCentric = false;
         } else {
             isFieldCentric = true;
@@ -38,6 +41,7 @@ public class TeleopCommand extends Command {
         //controlls to reset gyro
         if(driveController.rightTrigger().getAsBoolean()) {
             driveSubsystem.resetGyro();
+            System.out.println("Input recieved TeleopCommand");
         }
 
         // Applies a deadzone to the controller inpts
