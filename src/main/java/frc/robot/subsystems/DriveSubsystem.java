@@ -80,6 +80,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetGyro(){
       gyro.reset();
+      System.out.println("Recieving controller inputs");
     }
 
 
