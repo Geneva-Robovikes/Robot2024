@@ -30,7 +30,7 @@ public final class Constants {
   max speed is 16. speed is in m/s. do not make robot go too fast*/
 
   public static final double maxModuleAcceleration = 2;
-  public static final double maxTranlationalDriveSpeed = 1.5;
+  public static final double maxTranslationalDriveSpeed = 1.5;
   public static final double maxRotationalDriveSpeed = Math.PI;
   public static final double controllerDeadzone = 0.1;
 
