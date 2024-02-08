@@ -9,7 +9,7 @@ public class StopCommand extends Command  {
 
     public StopCommand(DriveSubsystem drive) {
         driveSubsystem = drive;
-        
+
         addRequirements(drive);
     }
 
