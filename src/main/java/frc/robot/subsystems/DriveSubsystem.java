@@ -27,10 +27,10 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backLeftLocation = new Translation2d(-0.3048, 0.3048);
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
-  SwerveModule frontLeftModule = new SwerveModule(41, 42, false, true);
-  SwerveModule frontRightModule = new SwerveModule(31, 32, false, true);
-  SwerveModule backLeftModule = new SwerveModule(11, 12, false, true);
-  SwerveModule backRightModule = new SwerveModule(21, 22, false, true);
+  SwerveModule frontRightModule = new SwerveModule(41, 42, false, true);
+  SwerveModule frontLeftModule = new SwerveModule(31, 32, false, true);
+  SwerveModule backRightModule = new SwerveModule(12, 11, false, true);
+  SwerveModule backLeftModule = new SwerveModule(22, 21, false, true);
 
 
   public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
@@ -80,7 +80,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetGyro(){
       gyro.reset();
-      System.out.println("Recieving controller inputs");
+      
     }
 
 

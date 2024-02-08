@@ -20,13 +20,13 @@ public class SwerveModule {
     //PID controllers track position/velocity
     //The Profiled PID controller is an extension of PID controllers that allow for velocity and acceleration constraints
     //PID controllers collect feedback and correct for error
-    ProfiledPIDController drivePID = new ProfiledPIDController(0, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleVelocity));
-    PIDController turnPID = new PIDController(0, 0, 0);
+    ProfiledPIDController drivePID = new ProfiledPIDController(3.1679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleVelocity));
+    PIDController turnPID = new PIDController(4.1807, 0, 0.23405);
 
+    //Feedforward controllers anticipate motion
+    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.095829, 2.7601, 0.71108);
+    SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0.24959, 0.3754, 0.0068821);
 
-    //feedforward controllers anticipate motion
-    SimpleMotorFeedforward drivFeedforward = new SimpleMotorFeedforward(0, 0, 0);
-    SimpleMotorFeedforward turnFeedforward = new SimpleMotorFeedforward(0, 0, 0);
 
     // creats the modules for swerve
     // @param driveMotorIndex sets the index of the drive motor
@@ -80,7 +80,9 @@ public class SwerveModule {
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getCurrentAngle()));
 
         double driveOutput = drivePID.calculate(getDriveVelocity(), state.speedMetersPerSecond);
-        double driveFeed = drivFeedforward.calculate(state.speedMetersPerSecond);
+        double driveFeed = driveFeedForward.calculate(state.speedMetersPerSecond);
+
+        //might be issue
         double turnOutput = turnPID.calculate(getCurrentAngle(), state.angle.getRadians());
 
         if(Math.abs(driveOutput + driveFeed) > .75){
@@ -101,16 +103,16 @@ public class SwerveModule {
     }
 
     private double getDriveVelocity(){
-        return driveMotor.getPosition().getValueAsDouble() / Constants.swerveDriveGearRatio /Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
+        return driveMotor.getRotorPosition().getValueAsDouble() / Constants.swerveDriveGearRatio /Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
     }
 
     private double getDrivenDistance(){
-        return driveMotor.getPosition().getValueAsDouble() / Constants.swerveDriveGearRatio /Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
+        return driveMotor.getRotorPosition().getValueAsDouble() / Constants.swerveDriveGearRatio /Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
 
     }
 
     private double getCurrentAngle(){
-        return turnMotor.getPosition().getValueAsDouble() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
+        return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
     }
 
 
