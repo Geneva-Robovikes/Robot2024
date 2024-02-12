@@ -27,10 +27,10 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
   //Establishes motor indecies for each module.
-  SwerveModule frontLeftModule = new SwerveModule(41, 42, false, true);
-  SwerveModule frontRightModule = new SwerveModule(31,32, false, true);
-  SwerveModule backLeftModule = new SwerveModule(12, 11, false, true);
-  SwerveModule backRightModule = new SwerveModule(22, 21, false, true);
+  SwerveModule frontRightModule = new SwerveModule(41, 42, false, true);
+  SwerveModule frontLeftModule = new SwerveModule(31,32, false, true);
+  SwerveModule backRightModule = new SwerveModule(12, 11, false, true);
+  SwerveModule backLeftModule = new SwerveModule(22, 21, false, true);
 
   //Creates the drive kinematics. This is the math for moving the drivetrain.
   public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
@@ -76,10 +76,11 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
     ChassisSpeeds speeds;
+    System.out.println(angularVelocity);
     if(isFieldCentric) {
       speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, -yVelocity, angularVelocity, getRotation2d());
     } else {
-      speeds = new ChassisSpeeds(xVelocity, -yVelocity, angularVelocity);
+      speeds = new ChassisSpeeds(xVelocity, -yVelocity, -angularVelocity);
     }
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
     //Set max speed/max velocity here
@@ -175,4 +176,6 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftModule.setModule(driveVolts, turnVolts);
     backRightModule.setModule(driveVolts, turnVolts);
   }
+
+
 }

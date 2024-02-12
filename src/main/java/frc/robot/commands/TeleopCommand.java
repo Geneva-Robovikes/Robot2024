@@ -35,7 +35,7 @@ public class TeleopCommand extends Command {
     // Squares inputs so fine movements are easier to make
     double x1 = Math.signum(driveController.getLeftX()) * Math.pow(driveController.getLeftX(), 2);
     double y1 = Math.signum(-driveController.getLeftY()) * Math.pow(driveController.getLeftY(), 2);
-    double x2 = Math.signum(-driveController.getRightX()) * Math.pow(driveController.getRightX(), 2);
+    double x2 = Math.signum(driveController.getRightX()) * Math.pow(driveController.getRightX(), 2);
     double rightTrigger = driveController.getRightTriggerAxis();
 
     // If the right controller is pressed, drive switches to robot centric
@@ -56,7 +56,7 @@ public class TeleopCommand extends Command {
     x2 = MathUtil.applyDeadband(x2, OperatorConstants.controllerDeadzone);
 
     // Switches inputs to speeds in meters per second
-    double vX = y1 * maxSpeedXY;
+    double vX = y1 * maxSpeedXY;  
     double vY = x1 * maxSpeedXY;
     double vTheta = x2 * maxSpeedTheta;
 

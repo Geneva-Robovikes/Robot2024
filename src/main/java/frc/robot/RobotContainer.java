@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.SwerveModule;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -39,6 +40,7 @@ public class RobotContainer {
 
   /* ~~~Subsystems~~~ */
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  
 
   /* ~~~~Commands~~~~ */
 
@@ -65,6 +67,7 @@ public class RobotContainer {
   }
 
   public void encoderTest() {
+    
 
   }
 
