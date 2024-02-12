@@ -57,6 +57,8 @@ public class RobotContainer {
 
   public RobotContainer() {
     autoChooser.setDefaultOption("path1", "path 1");
+    
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     // Configure the trigger bindings
     configureBindings();
