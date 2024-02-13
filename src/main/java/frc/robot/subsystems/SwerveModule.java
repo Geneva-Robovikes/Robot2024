@@ -80,8 +80,7 @@ public class SwerveModule {
      * Sets the drive and turn motor's position back to 0.
      */
     public void resetModule() {
-        double turnPosition =  canCoder.getAbsolutePosition().getValueAsDouble();
-        driveMotor.setPosition(0);
+        double turnPosition = canCoder.getAbsolutePosition().getValueAsDouble();
         turnMotor.setPosition(-turnPosition);
     }
 
