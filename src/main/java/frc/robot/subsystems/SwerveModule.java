@@ -22,8 +22,8 @@ public class SwerveModule {
     //PID controllers allow for accurate position/velocity tracking
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
     //These are feedback controllers, so they correct for error
-    ProfiledPIDController drivePID = new ProfiledPIDController(0.1, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
-    PIDController turnPID = new PIDController(0.48, 0, 0);
+    ProfiledPIDController drivePID = new ProfiledPIDController(0, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
+    PIDController turnPID = new PIDController(1.4, 0, 0);
     //1.4
 
     //Feedforward controllers anticipate motion
@@ -81,7 +81,8 @@ public class SwerveModule {
      */
     public void resetModule() {
         double turnPosition = canCoder.getAbsolutePosition().getValueAsDouble();
-        turnMotor.setPosition(-turnPosition);
+        //turnMotor.set(-turnPosition);
+        System.out.println(turnPosition + "turn angle");
     }
 
     /**
