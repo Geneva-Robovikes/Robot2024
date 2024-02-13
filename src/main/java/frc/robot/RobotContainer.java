@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.TeleopCommand;
+import frc.robot.commands.AutoDistance;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
 
@@ -53,11 +54,11 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
 
-  SendableChooser<String> autoChooser = new SendableChooser<>();
+  SendableChooser<String> autoChooser = new SendableChooser<String>();
 
   public RobotContainer() {
-    autoChooser.setDefaultOption("path1", "path 1");
-    
+    autoChooser.setDefaultOption("path1", "Path 1");
+    autoChooser.addOption("test", "test path");
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
     // Configure the trigger bindings
@@ -65,10 +66,12 @@ public class RobotContainer {
   }
 
   public void checkLimitSwitch() {
+    SmartDashboard.putNumber("Gyro", driveSubsystem.getGyroAngleY());
 
   }
 
   public void encoderTest() {
+
     
 
   }
@@ -109,6 +112,11 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+  public Command distanceTest() {
+    return new AutoDistance(driveSubsystem);
+  }
+
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return new ParallelCommandGroup(/* TODO */);

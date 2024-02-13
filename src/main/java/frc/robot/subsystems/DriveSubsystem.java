@@ -27,10 +27,10 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
   //Establishes motor indecies for each module.
-  SwerveModule frontRightModule = new SwerveModule(41, 42, false, true);
-  SwerveModule frontLeftModule = new SwerveModule(31,32, false, true);
-  SwerveModule backRightModule = new SwerveModule(12, 11, false, true);
-  SwerveModule backLeftModule = new SwerveModule(22, 21, false, true);
+  SwerveModule frontRightModule = new SwerveModule(41, 42, 43,false, true);
+  SwerveModule frontLeftModule = new SwerveModule(31,32, 33,false, true);
+  SwerveModule backRightModule = new SwerveModule(12, 11, 13,false, true);
+  SwerveModule backLeftModule = new SwerveModule(22, 21, 23,false, true);
 
   //Creates the drive kinematics. This is the math for moving the drivetrain.
   public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);

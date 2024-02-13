@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.core.CoreCANcoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -15,12 +17,14 @@ import frc.robot.Constants;
 public class SwerveModule {
     TalonFX driveMotor;
     TalonFX turnMotor;
+    CANcoder canCoder;
 
     //PID controllers allow for accurate position/velocity tracking
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
     //These are feedback controllers, so they correct for error
-    ProfiledPIDController drivePID = new ProfiledPIDController(0, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
-    PIDController turnPID = new PIDController(1.4, 0, 0);
+    ProfiledPIDController drivePID = new ProfiledPIDController(0.1, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
+    PIDController turnPID = new PIDController(0.48, 0, 0);
+    //1.4
 
     //Feedforward controllers anticipate motion
     SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.095829, 2.7601, 0.71108);
@@ -33,9 +37,10 @@ public class SwerveModule {
      * @param driveInverted True if the drive motor should be inverted
      * @param turnInverted True if the turn motor should be inverted
      */
-    public SwerveModule(int driveMotorIndex, int turnMotorIndex, boolean driveInverted, boolean turnInverted) {
+    public SwerveModule(int driveMotorIndex, int turnMotorIndex, int canCoderIndex,boolean driveInverted, boolean turnInverted) {
         driveMotor = new TalonFX(driveMotorIndex);
         turnMotor = new TalonFX(turnMotorIndex);
+        canCoder = new CANcoder(canCoderIndex);
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
         driveMotor.setInverted(driveInverted);
         turnMotor.setInverted(turnInverted);
@@ -58,8 +63,6 @@ public class SwerveModule {
     public void setModule(double driveVolts, double turnVolts) {
         driveMotor.setVoltage(driveVolts);
         turnMotor.setVoltage(turnVolts);
-        System.out.println("driveVolts" + driveVolts);
-        System.out.println("turnVolts" + turnVolts);
     }
 
     /**
@@ -77,8 +80,9 @@ public class SwerveModule {
      * Sets the drive and turn motor's position back to 0.
      */
     public void resetModule() {
+        double turnPosition =  canCoder.getAbsolutePosition().getValueAsDouble();
         driveMotor.setPosition(0);
-        turnMotor.setPosition(0);
+        turnMotor.setPosition(-turnPosition);
     }
 
     /**
