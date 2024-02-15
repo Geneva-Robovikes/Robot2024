@@ -31,7 +31,7 @@ public final class Constants {
 
   public static final double maxModuleAcceleration = 2;
   public static final double maxTranslationalDriveSpeed = 1.5;
-  public static final double maxRotationalDriveSpeed = Math.PI;
+  public static final double maxRotationalDriveSpeed = -Math.PI;
   public static final double controllerDeadzone = 0.1;
 
 }
