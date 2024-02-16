@@ -69,6 +69,7 @@ public class RobotContainer {
   }
 
   public void encoderTest() {
+        SmartDashboard.putNumber("Gyro", driveSubsystem.getGyroAngleY());
     
 
   }
