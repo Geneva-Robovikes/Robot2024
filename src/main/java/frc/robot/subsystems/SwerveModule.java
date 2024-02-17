@@ -20,8 +20,8 @@ public class SwerveModule {
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
     //These are feedback controllers, so they correct for error
     ProfiledPIDController drivePID = new ProfiledPIDController(0, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
-    PIDController turnPID = new PIDController(2.4, 0.035596, 0.1520226);
-    //ki 0.035596
+    PIDController turnPID = new PIDController(2.4, 0, 0);
+    //ki 0.035596 1520226
 
     //Feedforward controllers anticipate motion
     SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.095829, 2.7601, 0.71108);

@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANcoder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -31,6 +33,10 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveModule frontLeftModule = new SwerveModule(31,32, false, true);
   SwerveModule backRightModule = new SwerveModule(12, 11, false, true);
   SwerveModule backLeftModule = new SwerveModule(22, 21, false, true);
+
+  CANcoder backLeftEncoder = new CANcoder(23);
+  
+  backLeftEncoder.configAbsoluteSensorRange(Signed_PlusMinus180);
 
   //Creates the drive kinematics. This is the math for moving the drivetrain.
   public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
@@ -76,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
     ChassisSpeeds speeds;
-    //System.out.println(angularVelocity);
+    System.out.println(backLeftEncoder.getAbsolutePosition());
     if(isFieldCentric) {
       speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, -yVelocity, angularVelocity, getRotation2d());
     } else {
