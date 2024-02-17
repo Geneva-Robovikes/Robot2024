@@ -45,9 +45,11 @@ public class TeleopCommand extends Command {
       isFieldCentric = true;
     }
 
-    //controlls to reset gyro
+    //controlls to reset gyro and swerve
     if(driveController.rightTrigger().getAsBoolean()) {
       driveSubsystem.resetGyro();
+    }else if(driveController.y().getAsBoolean()){
+      driveSubsystem.swerveAlignment();
     }
 
     // Applies a deadzone to the controller inpts
@@ -60,6 +62,7 @@ public class TeleopCommand extends Command {
     double vY = x1 * maxSpeedXY;
     double vTheta = x2 * maxSpeedTheta;
 
+    System.out.println(vX + " " + vY + " " + vTheta);
     // Sets the drive speeds
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, isFieldCentric);
   }

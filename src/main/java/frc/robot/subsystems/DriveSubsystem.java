@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.CANcoder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,8 +12,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import frc.robot.Constants;
 import frc.robot.commands.StopCommand;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -29,14 +30,11 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
   //Establishes motor indecies for each module.
-  SwerveModule frontRightModule = new SwerveModule(41, 42, false, true);
-  SwerveModule frontLeftModule = new SwerveModule(31,32, false, true);
-  SwerveModule backRightModule = new SwerveModule(12, 11, false, true);
-  SwerveModule backLeftModule = new SwerveModule(22, 21, false, true);
-
-  CANcoder backLeftEncoder = new CANcoder(23);
+  SwerveModule frontRightModule = new SwerveModule(41, 42, 43, false, true);
+  SwerveModule frontLeftModule = new SwerveModule(31,32, 33, false, true);
+  SwerveModule backRightModule = new SwerveModule(12, 11, 13, false, true);
+  SwerveModule backLeftModule = new SwerveModule(22, 21, 23,false, true);
   
-  backLeftEncoder.configAbsoluteSensorRange(Signed_PlusMinus180);
 
   //Creates the drive kinematics. This is the math for moving the drivetrain.
   public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
@@ -82,7 +80,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
     ChassisSpeeds speeds;
-    System.out.println(backLeftEncoder.getAbsolutePosition());
+
     if(isFieldCentric) {
       speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, -yVelocity, angularVelocity, getRotation2d());
     } else {
@@ -101,6 +99,12 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
+  /*
+   *  In theory aligns swerve.
+   */
+  public void swerveAlignment() {
+    System.out.println("china");
+  }
   /**
    * Resets the odometry's zero position the current position.
    * @param pose The new pose in meters and radians.

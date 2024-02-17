@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -15,6 +17,7 @@ import frc.robot.Constants;
 public class SwerveModule {
     TalonFX driveMotor;
     TalonFX turnMotor;
+    CANcoder encoder;
 
     //PID controllers allow for accurate position/velocity tracking
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
@@ -34,13 +37,21 @@ public class SwerveModule {
      * @param driveInverted True if the drive motor should be inverted
      * @param turnInverted True if the turn motor should be inverted
      */
-    public SwerveModule(int driveMotorIndex, int turnMotorIndex, boolean driveInverted, boolean turnInverted) {
+    public SwerveModule(int driveMotorIndex, int turnMotorIndex, int encoderIndex, boolean driveInverted, boolean turnInverted) {
         driveMotor = new TalonFX(driveMotorIndex);
         turnMotor = new TalonFX(turnMotorIndex);
+        encoder = new CANcoder(encoderIndex);
+
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
         driveMotor.setInverted(driveInverted);
         turnMotor.setInverted(turnInverted);
+
+        encoder.getConfigurator().apply(new CANcoderConfiguration());
+
         resetModule();
+
+        System.out.println("Error: " + (encoder.getAbsolutePosition().getValueAsDouble() * 360));
+        System.out.println("Ajusted: " + (encoder.getAbsolutePosition().getValueAsDouble() * 360 - encoder.getAbsolutePosition().getValueAsDouble() * 360));
     }
 
     /**
@@ -59,7 +70,6 @@ public class SwerveModule {
     public void setModule(double driveVolts, double turnVolts) {
         driveMotor.setVoltage(driveVolts);
         turnMotor.setVoltage(turnVolts);
-        
     }
 
     /**
