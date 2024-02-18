@@ -22,56 +22,86 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class CameraSubsystem extends SubsystemBase {
+  AprilTagFieldLayout tagLayout;
+  PhotonCamera camera;
+  Transform3d cameraPosition;
+  PhotonPipelineResult result;
+  PhotonPoseEstimator poseEstimator;
 
-
-  /** Creates a new CameraSubsystem. */
-  
-    AprilTagFieldLayout tagLayout;
-    PhotonCamera camera;
-    Transform3d cameraPosition;
-    PhotonPipelineResult result;
-    PhotonPoseEstimator poseEstimator;
-  
-
-  public CameraSubsystem(String cameraName, Transform3d cameraPosition){
+  /**
+   * Creates a new camera with name, position, and pitch from the horizontal.
+   * @param cameraName name of the camera on Photon Vision Dashboard.
+   * @param cameraPosition Position of the camera from robot center.
+   * @param cameraPitch
+   */
+  public CameraSubsystem(String cameraName, Transform3d cameraPosition) {
     camera = new PhotonCamera(cameraName);
     camera.setPipelineIndex(3);
     result = camera.getLatestResult();
     this.cameraPosition = cameraPosition;
 
-    try{
+    try {
       tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
-    } catch (Exception e){
-      System.err.println("No File");
+    } catch (Exception e) {
+      System.err.println("File cannot be loaded");
     }
+    poseEstimator = new PhotonPoseEstimator(tagLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, cameraPosition);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    //System.out.println(camera.getLatestResult());
     result = camera.getLatestResult();
   }
 
-  public boolean hasTargts(){
+  /**
+   * Get whether the camera sees targets.
+   * @return true if targets are found.
+   */
+  public boolean hasTargets() {
     return result.hasTargets();
+    //result.getBestTarget().getSkew();
   }
 
-  public double getTargetSkew(){
+  /**
+   * Get the best target's skew.
+   * @return Skew angle.
+   */
+  //added by alex
+  public double getTargetSkew() {
     return result.getBestTarget().getSkew();
   }
 
-  public double getTargetPitch(){
+  public double getTargetPitch() {
     return result.getBestTarget().getPitch();
   }
 
-  public int getPiplineIndex(){
+
+  /*public pose getTargetPose() {
+    result.getBestTarget().getDistanceToPose();
+  }*/
+
+  /**
+   * Sets the camera's  to the index's corresponding pipeline.
+   * @return The index of the pipeline. 0 = April Tag, 1 = Disk
+   */
+  public int getPipelineIndex() {
     return camera.getPipelineIndex();
   }
 
-  public void setPipelineIndex(int index){
+  /**
+   * Sets the camera's pipeline to the index's corresponding pipeline.
+   * @param index The index of the pipeline. 0 = April Tag, 1 = Disk
+   */
+  public void setPipeline(int index) {
     camera.setPipelineIndex(index);
   }
 
+  /**
+   * Gets the estimated pose from an apriltag.
+   * @param prevEstimatedRobotPose The current pose in the odometry.
+   * @return The new pose estimate.
+   */
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
     poseEstimator.setReferencePose(prevEstimatedRobotPose);
     return poseEstimator.update();
