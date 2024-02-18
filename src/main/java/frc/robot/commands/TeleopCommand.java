@@ -62,7 +62,6 @@ public class TeleopCommand extends Command {
     double vY = x1 * maxSpeedXY;
     double vTheta = x2 * maxSpeedTheta;
 
-    System.out.println(vX + " " + vY + " " + vTheta);
     // Sets the drive speeds
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, isFieldCentric);
   }
