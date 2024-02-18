@@ -40,7 +40,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   /* ~~~Subsystems~~~ */
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   
 
   /* ~~~~Commands~~~~ */
@@ -101,10 +101,11 @@ public class RobotContainer {
      * m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
      */
 
-     driverController.a().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
-     driverController.b().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-     driverController.x().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-     driverController.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+   //driverController.a().whileTrue(driveSubsystem.backRightModule.turnTest());
+   driverController.a().whileTrue(driveSubsystem.turnSysIdDynamic(SysIdRoutine.Direction.kForward));
+   driverController.b().whileTrue(driveSubsystem.turnSysIdDynamic(SysIdRoutine.Direction.kReverse));
+   driverController.x().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
+   driverController.y().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
   }
 

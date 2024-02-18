@@ -3,7 +3,12 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import static edu.wpi.first.units.MutableMeasure.mutable;
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -11,13 +16,20 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.MutableMeasure;
+import edu.wpi.first.units.Velocity;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 
-public class SwerveModule {
+public class SwerveModule extends SubsystemBase {
     TalonFX driveMotor;
-    TalonFX turnMotor;
+    public TalonFX turnMotor;
     CANcoder encoder;
     double offset;
 
@@ -25,8 +37,8 @@ public class SwerveModule {
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
     //These are feedback controllers, so they correct for error
     ProfiledPIDController drivePID = new ProfiledPIDController(0.19679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
-    PIDController turnPID = new PIDController(2.4, 0, 0);
-    //ki 0.035596 1520226
+    PIDController turnPID = new PIDController(50.75, 0, 3.7676);
+    //ki 0.027342 0.48255
 
     //Feedforward controllers anticipate motion
     SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.2313, 0.13458, 4.038);
@@ -41,7 +53,9 @@ public class SwerveModule {
      */
     public SwerveModule(int driveMotorIndex, int turnMotorIndex, int encoderIndex, double encoderOffset, boolean driveInverted, boolean turnInverted) {
         driveMotor = new TalonFX(driveMotorIndex);
+        driveMotor.setNeutralMode(NeutralModeValue.Coast);
         turnMotor = new TalonFX(turnMotorIndex);
+        turnMotor.setNeutralMode(NeutralModeValue.Coast);
         encoder = new CANcoder(encoderIndex);
         offset = encoderOffset;
 
@@ -51,7 +65,7 @@ public class SwerveModule {
 
         encoder.getConfigurator().apply(new CANcoderConfiguration());
 
-        System.out.println("Error: " + (encoder.getAbsolutePosition().getValueAsDouble() - encoderOffset));
+        //System.out.println("Error: " + (encoder.getAbsolutePosition().getValueAsDouble() - encoderOffset));
 
         resetModule();
     }
@@ -70,6 +84,10 @@ public class SwerveModule {
 
     public double getEncoderRotations() {
         return (encoder.getAbsolutePosition().getValueAsDouble() - offset);
+    }
+
+    public Command turnTest() {
+        return this.run(() -> turnMotor.setVoltage(4));
     }
 
     /**
@@ -160,8 +178,33 @@ public class SwerveModule {
      * Returns the current wheel angle of the module.
      * @return The angle of the wheel in radians.
      */
-    private double getCurrentAngle() {
-        return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio * 2 * Math.PI;
-        //return encoder.getAbsolutePosition().getValueAsDouble() * (2*Math.PI);
+    public double getCurrentAngle() {
+        //return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio * 2 * Math.PI;
+        return encoder.getAbsolutePosition().getValueAsDouble() * Math.PI;
     }
+
+    public double getAngularVelocity() {
+        return encoder.getVelocity().getValueAsDouble() * 2 * Math.PI;
+    }
+
+      // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
+    private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
+    // Mutable holder for unit-safe linear distance values, persisted to avoid reallocation.
+    private final MutableMeasure<Angle> m_distance = mutable(Radians.of(0));
+    // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
+    private final MutableMeasure<Velocity<Angle>> m_velocity = mutable(RadiansPerSecond.of(0));
+
+    public SysIdRoutine turnRoutine = new SysIdRoutine(
+        new SysIdRoutine.Config(),
+        new SysIdRoutine.Mechanism(
+          (Measure<Voltage> volts) -> {
+            turnMotor.setVoltage(volts.in(Volts));
+          },
+          log -> {
+              log.motor("Back Right").voltage(m_appliedVoltage.mut_replace(turnMotor.get() * RobotController.getBatteryVoltage(), Volts));
+              log.motor("Back Right").angularPosition(m_distance.mut_replace(getCurrentAngle(), Radians));
+              log.motor("Back Right").angularVelocity(m_velocity.mut_replace(getAngularVelocity(), RadiansPerSecond));
+          },
+          this)
+        );
 }

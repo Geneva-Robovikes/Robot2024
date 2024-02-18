@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import frc.robot.Constants;
 import frc.robot.commands.StopCommand;
@@ -43,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
   //Establishes motor indecies for each module.
   SwerveModule frontRightModule = new SwerveModule(41, 42, 43, Constants.frontRightEncoderOffset, false, true);
   SwerveModule frontLeftModule = new SwerveModule(31,32, 33, Constants.frontLeftEncoderOffset, false, true);
-  SwerveModule backRightModule = new SwerveModule(12, 11, 13, Constants.backRightEncoderOffset, false, true);
+  public SwerveModule backRightModule = new SwerveModule(12, 11, 13, Constants.backRightEncoderOffset, false, true);
   SwerveModule backLeftModule = new SwerveModule(22, 21, 23, Constants.backLeftEncoderOffset, false, true);
   
 
@@ -212,9 +213,9 @@ public class DriveSubsystem extends SubsystemBase {
         setModules(volts.in(Volts), 0);
       },
       log -> {
-        log.motor("Front Left").voltage(m_appliedVoltage.mut_replace(frontLeftModule.getDriveVoltage(), Volts));
-        log.motor("Front Left").linearPosition(m_distance.mut_replace(frontLeftModule.getDriveDistance(), Meters));
-        log.motor("Front Left").linearVelocity(m_velocity.mut_replace(frontLeftModule.getDriveVelocity(), MetersPerSecond));
+        log.motor("Front Left").voltage(m_appliedVoltage.mut_replace(backRightModule.getDriveVoltage(), Volts));
+        log.motor("Front Left").linearPosition(m_distance.mut_replace(backRightModule.getDriveDistance(), Meters));
+        log.motor("Front Left").linearVelocity(m_velocity.mut_replace(backRightModule.getDriveVelocity(), MetersPerSecond));
       },
       this)
   );
@@ -226,4 +227,13 @@ public class DriveSubsystem extends SubsystemBase {
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return routine.dynamic(direction);
   }
+
+  public Command turnSysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return backRightModule.turnRoutine.quasistatic(direction);
+  }
+
+  public Command turnSysIdDynamic(SysIdRoutine.Direction direction) {
+    return backRightModule.turnRoutine.dynamic(direction);
+  }
+
 }
