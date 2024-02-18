@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -99,6 +100,12 @@ public class RobotContainer {
      * // cancelling on release.
      * m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
      */
+
+     driverController.a().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+     driverController.b().whileTrue(driveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+     driverController.x().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+     driverController.y().whileTrue(driveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
   }
 
   public Command getTeleopCommand() {

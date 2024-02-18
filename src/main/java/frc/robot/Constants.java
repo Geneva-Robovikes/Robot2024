@@ -35,9 +35,9 @@ public final class Constants {
   public static final double controllerDeadzone = 0.1;
 
   //encoder offsets, stil around a 1 degree error
-  //public static final double backLeftEncoderOffset = 68.642578125 - 0.087890625;
-  //public static final double backRightEncoderOffset = 167.255859375 - 0.615234375;
-  //public static final double frontLeftEncoderOffset = -39.0234375;
-  //public static final double frontRightEncoderOffset = 16.21484375;
+  public static final double backLeftEncoderOffset = 0.172607421875;
+  public static final double backRightEncoderOffset = 0.47705078125;
+  public static final double frontLeftEncoderOffset = -0.082275390625;
+  public static final double frontRightEncoderOffset = 0.0498046875;
 
 }

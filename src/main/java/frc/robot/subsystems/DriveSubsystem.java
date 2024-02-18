@@ -4,6 +4,11 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.MutableMeasure.mutable;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -13,9 +18,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
+import edu.wpi.first.units.Voltage;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import frc.robot.Constants;
 import frc.robot.commands.StopCommand;
 
@@ -30,10 +41,10 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
   //Establishes motor indecies for each module.
-  SwerveModule frontRightModule = new SwerveModule(41, 42, 43, false, true);
-  SwerveModule frontLeftModule = new SwerveModule(31,32, 33, false, true);
-  SwerveModule backRightModule = new SwerveModule(12, 11, 13, false, true);
-  SwerveModule backLeftModule = new SwerveModule(22, 21, 23,false, true);
+  SwerveModule frontRightModule = new SwerveModule(41, 42, 43, Constants.frontRightEncoderOffset, false, true);
+  SwerveModule frontLeftModule = new SwerveModule(31,32, 33, Constants.frontLeftEncoderOffset, false, true);
+  SwerveModule backRightModule = new SwerveModule(12, 11, 13, Constants.backRightEncoderOffset, false, true);
+  SwerveModule backLeftModule = new SwerveModule(22, 21, 23, Constants.backLeftEncoderOffset, false, true);
   
 
   //Creates the drive kinematics. This is the math for moving the drivetrain.
@@ -187,5 +198,32 @@ public class DriveSubsystem extends SubsystemBase {
     backRightModule.setModule(driveVolts, turnVolts);
   }
 
+  // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
+  private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
+  // Mutable holder for unit-safe linear distance values, persisted to avoid reallocation.
+  private final MutableMeasure<Distance> m_distance = mutable(Meters.of(0));
+  // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
+  private final MutableMeasure<Velocity<Distance>> m_velocity = mutable(MetersPerSecond.of(0));
 
+  SysIdRoutine routine = new SysIdRoutine(
+    new SysIdRoutine.Config(),
+    new SysIdRoutine.Mechanism(
+      (Measure<Voltage> volts) -> {
+        setModules(volts.in(Volts), 0);
+      },
+      log -> {
+        log.motor("Front Left").voltage(m_appliedVoltage.mut_replace(frontLeftModule.getDriveVoltage(), Volts));
+        log.motor("Front Left").linearPosition(m_distance.mut_replace(frontLeftModule.getDriveDistance(), Meters));
+        log.motor("Front Left").linearVelocity(m_velocity.mut_replace(frontLeftModule.getDriveVelocity(), MetersPerSecond));
+      },
+      this)
+  );
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return routine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return routine.dynamic(direction);
+  }
 }

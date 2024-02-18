@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import frc.robot.Constants;
 
@@ -18,16 +19,17 @@ public class SwerveModule {
     TalonFX driveMotor;
     TalonFX turnMotor;
     CANcoder encoder;
+    double offset;
 
     //PID controllers allow for accurate position/velocity tracking
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
     //These are feedback controllers, so they correct for error
-    ProfiledPIDController drivePID = new ProfiledPIDController(0, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
+    ProfiledPIDController drivePID = new ProfiledPIDController(0.19679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
     PIDController turnPID = new PIDController(2.4, 0, 0);
     //ki 0.035596 1520226
 
     //Feedforward controllers anticipate motion
-    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.095829, 2.7601, 0.71108);
+    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.2313, 0.13458, 4.038);
     SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0.24959, 0.3754, 0.0068821);
 
     /**
@@ -37,10 +39,11 @@ public class SwerveModule {
      * @param driveInverted True if the drive motor should be inverted
      * @param turnInverted True if the turn motor should be inverted
      */
-    public SwerveModule(int driveMotorIndex, int turnMotorIndex, int encoderIndex, boolean driveInverted, boolean turnInverted) {
+    public SwerveModule(int driveMotorIndex, int turnMotorIndex, int encoderIndex, double encoderOffset, boolean driveInverted, boolean turnInverted) {
         driveMotor = new TalonFX(driveMotorIndex);
         turnMotor = new TalonFX(turnMotorIndex);
         encoder = new CANcoder(encoderIndex);
+        offset = encoderOffset;
 
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
         driveMotor.setInverted(driveInverted);
@@ -48,10 +51,9 @@ public class SwerveModule {
 
         encoder.getConfigurator().apply(new CANcoderConfiguration());
 
-        resetModule();
+        System.out.println("Error: " + (encoder.getAbsolutePosition().getValueAsDouble() - encoderOffset));
 
-        System.out.println("Error: " + (encoder.getAbsolutePosition().getValueAsDouble() * 360));
-        System.out.println("Ajusted: " + (encoder.getAbsolutePosition().getValueAsDouble() * 360 - encoder.getAbsolutePosition().getValueAsDouble() * 360));
+        resetModule();
     }
 
     /**
@@ -60,6 +62,14 @@ public class SwerveModule {
     public void stopModule() {
         driveMotor.setVoltage(0);
         turnMotor.setVoltage(0);
+    }
+
+    public double getEncoderDegrees() {
+        return (encoder.getAbsolutePosition().getValueAsDouble() - offset * 360);
+    }
+
+    public double getEncoderRotations() {
+        return (encoder.getAbsolutePosition().getValueAsDouble() - offset);
     }
 
     /**
@@ -81,6 +91,10 @@ public class SwerveModule {
             getDriveDistance(),
             new Rotation2d(getCurrentAngle())
         );
+    }
+
+    public double getDriveVoltage() {
+        return driveMotor.get() * RobotController.getBatteryVoltage();
     }
 
     /**
@@ -130,7 +144,7 @@ public class SwerveModule {
      * Returns the current wheel velocity of the module.
      * @return The velocity in meters per second.
      */
-    private double getDriveVelocity() {
+    public double getDriveVelocity() {
         return driveMotor.getRotorPosition().getValueAsDouble() / Constants.swerveDriveGearRatio  * Math.PI * Constants.swerveWheelDiameter;
     }
 
@@ -138,7 +152,7 @@ public class SwerveModule {
      * Returns the current wheel position of the module.
      * @return The position of the wheel in meters.
      */
-    private double getDriveDistance() {
+    public double getDriveDistance() {
         return driveMotor.getRotorPosition().getValueAsDouble() / Constants.swerveDriveGearRatio * Math.PI * Constants.swerveWheelDiameter;
     }
 
@@ -148,5 +162,6 @@ public class SwerveModule {
      */
     private double getCurrentAngle() {
         return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio * 2 * Math.PI;
+        //return encoder.getAbsolutePosition().getValueAsDouble() * (2*Math.PI);
     }
 }
