@@ -5,7 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
 
@@ -41,13 +44,16 @@ public class RobotContainer {
 
   /* ~~~Subsystems~~~ */
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  public final ClawSubsystem clawSubsystem = new ClawSubsystem();
   
-
   /* ~~~~Commands~~~~ */
+  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem);
+  public final ShootCommand shootCommand = new ShootCommand(clawSubsystem);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController clawController = new CommandXboxController(1);
   //private final CommandXboxController controlController = new CommandXboxController(
   //    OperatorConstants.kControlControllerPort);
   /**
@@ -107,6 +113,8 @@ public class RobotContainer {
    driverController.x().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
    driverController.y().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
+   clawController.rightTrigger().whileTrue(intakeCommand);
+   clawController.leftTrigger().whileTrue(shootCommand);
   }
 
   public Command getTeleopCommand() {
