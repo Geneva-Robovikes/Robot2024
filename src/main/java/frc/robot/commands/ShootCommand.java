@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClawSubsystem;
 
@@ -11,18 +12,28 @@ public class ShootCommand extends Command {
 
   private final ClawSubsystem clawSubsystem;
 
-  public ShootCommand(ClawSubsystem subsystem) {
+  private final Timer timer = new Timer();
+  private final double delay;
+
+  public ShootCommand(ClawSubsystem subsystem, double outtakeDelay) {
     clawSubsystem = subsystem;
+    delay = outtakeDelay;
 
     addRequirements(subsystem);
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.reset();
+    timer.start();
+  }
 
   @Override
   public void execute() {
-    clawSubsystem.shootRing();
+    if(timer.get() > delay) {
+      clawSubsystem.setIntake(1);
+    }
+    clawSubsystem.setOuttake();
   }
 
   // Called once the command ends or is interrupted.

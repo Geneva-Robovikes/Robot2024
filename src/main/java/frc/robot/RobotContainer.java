@@ -47,8 +47,8 @@ public class RobotContainer {
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
   
   /* ~~~~Commands~~~~ */
-  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem);
-  public final ShootCommand shootCommand = new ShootCommand(clawSubsystem);
+  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, 32, .80);
+  public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController = new CommandXboxController(

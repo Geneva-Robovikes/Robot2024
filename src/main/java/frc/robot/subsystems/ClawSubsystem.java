@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClawSubsystem extends SubsystemBase {
@@ -29,18 +30,13 @@ public class ClawSubsystem extends SubsystemBase {
     intake.setInverted(true);
   }
 
-  public void shootRing(){
-    System.out.println("okay set both motors to 100%");
-
-    intake.set(0.3);
-    outtake1.set(0.3);
-    outtake2.set(0.3);
+  public void setOuttake(){
+    outtake1.set(.8);
+    outtake2.set(.8);
   }
 
-  public void intakeRing(){
-    System.out.println("okay intake ring");
-
-    intake.set(0.5);
+  public void setIntake(double speed){
+    intake.set(speed);
   }
 
   public void disableMotors(){
@@ -49,6 +45,10 @@ public class ClawSubsystem extends SubsystemBase {
     intake.set(0);
     outtake1.set(0);
     outtake2.set(0);
+  }
+
+  public double getClawMotorCurrent() {
+    return intake.getOutputCurrent();
   }
 
 
