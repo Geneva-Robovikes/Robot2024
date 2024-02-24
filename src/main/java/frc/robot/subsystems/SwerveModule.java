@@ -34,6 +34,7 @@ public class SwerveModule extends SubsystemBase {
     CANcoder encoder;
     double offset;
     String moduleName;
+    SwerveModuleState currentState;
 
     //PID controllers allow for accurate position/velocity tracking
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
@@ -135,6 +136,7 @@ public class SwerveModule extends SubsystemBase {
         // SwerveModuleState.optimize() fixes wheel rotation making it more efficient.
         // In simple terms, turning 180 degrees and driving forward is the same as turning 90 degrees and drving backwards.
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getCurrentAngle()));
+        currentState = state;
         //state = new SwerveModuleState(state.speedMetersPerSecond, state.angle.div(2));
         SmartDashboard.putNumber(moduleName + " desired state", state.angle.getRadians());
 
@@ -162,6 +164,10 @@ public class SwerveModule extends SubsystemBase {
             turnMotor.setVoltage(0);
         }
         
+    }
+
+    public SwerveModuleState getModuleState() {
+        return currentState;
     }
 
     /**

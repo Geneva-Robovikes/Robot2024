@@ -9,6 +9,11 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -26,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.commands.StopCommand;
 
@@ -66,6 +72,27 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     gyro.calibrate();
     setDefaultCommand(new StopCommand(this));
+
+    AutoBuilder.configureHolonomic(
+      this::getPose, 
+      this::resetOdometry, 
+      this::getRobotChassisSpeeds, 
+      this::driveRobotRelative, 
+      new HolonomicPathFollowerConfig(
+        new PIDConstants(5, 0, 0),
+        new PIDConstants(5, 0, 0),
+        4.5,
+        0.3048,
+        new ReplanningConfig()
+      ), 
+      () -> {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      }, 
+      this);
   }
   
   //Updates the odometry's position of the swerve drive on the field.
@@ -100,6 +127,16 @@ public class DriveSubsystem extends SubsystemBase {
     //Set max speed/max velocity here
     SwerveDriveKinematics.desaturateWheelSpeeds(states, 3);
     setModuleStates(states);
+  }
+
+  private ChassisSpeeds getRobotChassisSpeeds() {
+    return kinematics.toChassisSpeeds(getModuleStates());
+  }
+
+  private void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+    SwerveModuleState[] targetStates = kinematics.toSwerveModuleStates(targetSpeeds);
+    setModuleStates(targetStates);
   }
 
   /**
@@ -173,6 +210,14 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightModule.setDesiredState(moduleStates[1]);
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
+  }
+
+  public SwerveModuleState[] getModuleStates() {
+    SwerveModuleState[] states = {
+      frontLeftModule.getModuleState(), frontRightModule.getModuleState(),
+      backLeftModule.getModuleState(), backRightModule.getModuleState()
+    };
+    return states;
   }
 
   /**
