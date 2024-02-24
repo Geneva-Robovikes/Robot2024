@@ -26,8 +26,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import frc.robot.Constants;
 import frc.robot.commands.StopCommand;
 
@@ -42,10 +40,10 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
   //Establishes motor indecies for each module.
-  SwerveModule frontRightModule = new SwerveModule(41, 42, 43, Constants.frontRightEncoderOffset, false, true);
-  SwerveModule frontLeftModule = new SwerveModule(31,32, 33, Constants.frontLeftEncoderOffset, false, true);
-  public SwerveModule backRightModule = new SwerveModule(12, 11, 13, Constants.backRightEncoderOffset, false, true);
-  SwerveModule backLeftModule = new SwerveModule(22, 21, 23, Constants.backLeftEncoderOffset, false, true);
+  SwerveModule frontRightModule = new SwerveModule(41, 42, 43, Constants.frontRightEncoderOffset, false, true, "front right");
+  SwerveModule frontLeftModule = new SwerveModule(31,32, 33, Constants.frontLeftEncoderOffset, false, true, "front left");
+  public SwerveModule backRightModule = new SwerveModule(12, 11, 13, Constants.backRightEncoderOffset, false, true, "back right");
+  SwerveModule backLeftModule = new SwerveModule(22, 21, 23, Constants.backLeftEncoderOffset, false, true, "back left");
   
 
   //Creates the drive kinematics. This is the math for moving the drivetrain.
