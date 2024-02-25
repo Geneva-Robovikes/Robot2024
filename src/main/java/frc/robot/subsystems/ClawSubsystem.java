@@ -31,8 +31,8 @@ public class ClawSubsystem extends SubsystemBase {
   }
 
   public void setOuttake(){
-    outtake1.set(.8);
-    outtake2.set(.8);
+    outtake1.set(.95  );
+    outtake2.set(.95);
   }
 
   public void setIntake(double speed){
