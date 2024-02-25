@@ -22,6 +22,7 @@ import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -32,16 +33,18 @@ public class SwerveModule extends SubsystemBase {
     public TalonFX turnMotor;
     CANcoder encoder;
     double offset;
+    String moduleName;
+    SwerveModuleState currentState;
 
     //PID controllers allow for accurate position/velocity tracking
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
     //These are feedback controllers, so they correct for error
-    ProfiledPIDController drivePID = new ProfiledPIDController(0.19679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
-    PIDController turnPID = new PIDController(50.75, 0, 3.7676);
+    ProfiledPIDController drivePID = new ProfiledPIDController(3.1679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
+    PIDController turnPID = new PIDController(6.1807, 0, 0.23405);
     //ki 0.027342 0.48255
 
     //Feedforward controllers anticipate motion
-    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.2313, 0.13458, 4.038);
+    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.095829, 2.7601, 0.71108);
     SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0.24959, 0.3754, 0.0068821);
 
     /**
@@ -51,22 +54,24 @@ public class SwerveModule extends SubsystemBase {
      * @param driveInverted True if the drive motor should be inverted
      * @param turnInverted True if the turn motor should be inverted
      */
-    public SwerveModule(int driveMotorIndex, int turnMotorIndex, int encoderIndex, double encoderOffset, boolean driveInverted, boolean turnInverted) {
+    public SwerveModule(int driveMotorIndex, int turnMotorIndex, int encoderIndex, double encoderOffset, boolean driveInverted, boolean turnInverted, String moduleName) {
         driveMotor = new TalonFX(driveMotorIndex);
-        driveMotor.setNeutralMode(NeutralModeValue.Coast);
         turnMotor = new TalonFX(turnMotorIndex);
-        turnMotor.setNeutralMode(NeutralModeValue.Coast);
         encoder = new CANcoder(encoderIndex);
         offset = encoderOffset;
-
+        this.moduleName = moduleName;
+        
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
         driveMotor.setInverted(driveInverted);
         turnMotor.setInverted(turnInverted);
-
+        
         encoder.getConfigurator().apply(new CANcoderConfiguration());
-
+        
         //System.out.println("Error: " + (encoder.getAbsolutePosition().getValueAsDouble() - encoderOffset));
-
+        
+        driveMotor.setNeutralMode(NeutralModeValue.Brake);
+        turnMotor.setNeutralMode(NeutralModeValue.Brake);
+        
         resetModule();
     }
 
@@ -131,11 +136,14 @@ public class SwerveModule extends SubsystemBase {
         // SwerveModuleState.optimize() fixes wheel rotation making it more efficient.
         // In simple terms, turning 180 degrees and driving forward is the same as turning 90 degrees and drving backwards.
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getCurrentAngle()));
+        currentState = state;
+        //state = new SwerveModuleState(state.speedMetersPerSecond, state.angle.div(2));
+        SmartDashboard.putNumber(moduleName + " desired state", state.angle.getRadians());
 
         // The calculate method gets the result from the controllers.
         // For feedback, they take in the current position and the target position.
         // For feedforward, they take in the target position.
-        double driveOutput = drivePID.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+        double driveOutput = 0; //drivePID.calculate(getDriveVelocity(), state.speedMetersPerSecond);
         double driveFeed = driveFeedForward.calculate(state.speedMetersPerSecond);
         double turnOutput = turnPID.calculate(getCurrentAngle(), state.angle.getRadians());
         
@@ -150,7 +158,7 @@ public class SwerveModule extends SubsystemBase {
         }
         
         // Same idea as above!
-        if(Math.abs(turnOutput) > 0.75) {
+        if(Math.abs(turnOutput) > 0.25) {
             turnMotor.setVoltage(turnOutput);
         } else {
             turnMotor.setVoltage(0);
@@ -158,12 +166,16 @@ public class SwerveModule extends SubsystemBase {
         
     }
 
+    public SwerveModuleState getModuleState() {
+        return currentState;
+    }
+
     /**
      * Returns the current wheel velocity of the module.
      * @return The velocity in meters per second.
      */
     public double getDriveVelocity() {
-        return driveMotor.getRotorPosition().getValueAsDouble() / Constants.swerveDriveGearRatio  * Math.PI * Constants.swerveWheelDiameter;
+        return driveMotor.getRotorVelocity().getValueAsDouble() / Constants.swerveDriveGearRatio  * Math.PI * Constants.swerveWheelDiameter;
     }
 
     /**
@@ -180,7 +192,8 @@ public class SwerveModule extends SubsystemBase {
      */
     public double getCurrentAngle() {
         //return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio * 2 * Math.PI;
-        return encoder.getAbsolutePosition().getValueAsDouble() * Math.PI;
+        SmartDashboard.putNumber(moduleName, encoder.getAbsolutePosition().getValueAsDouble());
+        return (encoder.getAbsolutePosition().getValueAsDouble() - offset) * 2 * Math.PI;
     }
 
     public double getAngularVelocity() {

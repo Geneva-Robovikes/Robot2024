@@ -37,12 +37,17 @@ public class TeleopCommand extends Command {
     double y1 = Math.signum(-driveController.getLeftY()) * Math.pow(driveController.getLeftY(), 2);
     double x2 = Math.signum(driveController.getRightX()) * Math.pow(driveController.getRightX(), 2);
     double rightTrigger = driveController.getRightTriggerAxis();
+    boolean resetButton = driveController.y().getAsBoolean();
 
     // If the right controller is pressed, drive switches to robot centric
     if(rightTrigger > 0.5) {
       isFieldCentric = false;
     } else {
       isFieldCentric = true;
+    }
+
+    if(resetButton) {
+      driveSubsystem.resetGyro();
     }
 
     //controlls to reset gyro and swerve
