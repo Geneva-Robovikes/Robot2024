@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
@@ -29,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  private static final Command ArmCommand = null;
   /* ~~~Subsystems~~~ */
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
@@ -102,6 +104,7 @@ public class RobotContainer {
 
    clawController.rightTrigger().whileTrue(intakeCommand);
    clawController.leftTrigger().whileTrue(shootCommand);
+   clawController.povUp().whileTrue(ArmCommand);
   }
 
   public Command getTeleopCommand() {
