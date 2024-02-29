@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class ArmCommand extends Command {
+public class ArmupCommand extends Command {
   //there was a suppress warning thingy on falcon command so idk what that is
 
   private final ArmSubsystem armSubsystem;
   /** Creates a new ArmCommand. */
-  public ArmCommand(ArmSubsystem subsystem) {
+  public ArmupCommand(ArmSubsystem subsystem) {
     armSubsystem = subsystem;
 
     addRequirements(subsystem);
