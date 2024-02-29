@@ -5,18 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.Clawpivotsubsystem;
 
-public class ArmupCommand extends Command {
-  //there was a suppress warning thingy on falcon command so idk what that is
-
-  private final ArmSubsystem armSubsystem;
-  /** Creates a new ArmCommand. */
-  public ArmupCommand(ArmSubsystem subsystem) {
-    armSubsystem = subsystem;
-
-    addRequirements(subsystem);
+public class clawpivotupcommand extends Command {
+  /** Creates a new clawpivotcommand. */
+  public clawpivotupcommand(Clawpivotsubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -27,13 +20,13 @@ public class ArmupCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armSubsystem.setspeed(0.3);
+    Clawpivotsubsystem.setspeed(0.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSubsystem.setspeed(0);
+    Clawpivotsubsystem.setspeed(0);
   }
 
   // Returns true when the command should end.

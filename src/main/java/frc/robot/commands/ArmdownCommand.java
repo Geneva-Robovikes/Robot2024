@@ -27,19 +27,14 @@ public class ArmdownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Arm speed set to 30%");
-
     armSubsystem.setspeed(-0.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Arm speed set to 0%");
-
     armSubsystem.setspeed(0);
   }
-
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
