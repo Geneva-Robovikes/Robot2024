@@ -5,12 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Clawpivotsubsystem;
 
 public class clawpivotdowncommand extends Command {
+  private Clawpivotsubsystem subsystem;
+
   /** Creates a new clawpivotcommand. */
   public clawpivotdowncommand(Clawpivotsubsystem subsystem) {
+    Clawpivotsubsystem sub;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -32,6 +37,6 @@ public class clawpivotdowncommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return subsystem.getlimit();
   }
 }

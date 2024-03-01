@@ -7,16 +7,22 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Clawpivotsubsystem extends SubsystemBase {
-  static TalonFX falcon1;
+ static TalonFX falcon1;
+ DigitalInput limitswitch;
   /** Creates a new Clawpivotsubsystem. */
   public Clawpivotsubsystem() {
-    falcon1 = new TalonFX(71);
+    falcon1 = new TalonFX(63);
+    limitswitch = new DigitalInput(1);
   }
 public static void setspeed(double speed) {
   falcon1.set(speed);
+}
+public boolean getlimit(){
+  return limitswitch.get();
 }
   @Override
   public void periodic() {

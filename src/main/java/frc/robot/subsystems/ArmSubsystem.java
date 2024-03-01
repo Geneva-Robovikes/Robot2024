@@ -16,13 +16,11 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
     falcon1 = new TalonFX(61);
     falcon2 = new TalonFX(62);
-    falcon3 = new TalonFX(63);
   }
 
   public void setspeed(double speed) {
     falcon1.set(speed);
     falcon2.set(speed);
-    falcon3.set(speed);
   }
 
   @Override
