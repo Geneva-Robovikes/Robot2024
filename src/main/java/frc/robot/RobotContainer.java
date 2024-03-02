@@ -6,8 +6,10 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.TeleopCommand;
+import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
+
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -18,6 +20,11 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Quaternion;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,7 +47,19 @@ public class RobotContainer {
 
   /* ~~~Subsystems~~~ */
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  
+
+  CameraSubsystem[] cameras = {new CameraSubsystem("camera 1", 
+                                new Transform3d(
+                                  new Pose3d(.0, .0, .0, new Rotation3d()),
+                                  new Pose3d(.0, .0, .0, new Rotation3d())
+                                 )),
+                                new CameraSubsystem("camera 2", 
+                                new Transform3d(
+                                  new Pose3d(.0, .0, .0, new Rotation3d()),
+                                  new Pose3d(.0, .0, .0, new Rotation3d())
+                                ))};
+  CameraSubsystem camera1 = cameras[0];
+  CameraSubsystem camera2 = cameras[1];
 
   /* ~~~~Commands~~~~ */
 
