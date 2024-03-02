@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Clawpivotsubsystem;
 
 public class clawpivotdowncommand extends Command {
-  private Clawpivotsubsystem subsystem;
+  private final Clawpivotsubsystem clawpivotsubsystem;
 
   /** Creates a new clawpivotcommand. */
   public clawpivotdowncommand(Clawpivotsubsystem subsystem) {
-    Clawpivotsubsystem sub;
+    clawpivotsubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -37,6 +37,6 @@ public class clawpivotdowncommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subsystem.getlimit();
+    return clawpivotsubsystem.getlimit();
   }
 }

@@ -9,11 +9,14 @@ import frc.robot.subsystems.Clawpivotsubsystem;
 
 public class clawpivotupcommand extends Command {
   /** Creates a new clawpivotcommand. */
+  private final Clawpivotsubsystem clawpivotsubsystem;
   public clawpivotupcommand(Clawpivotsubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+   clawpivotsubsystem = subsystem;
+   addRequirements(subsystem); 
   }
 
-  // Called when the command is initially scheduled.
+  // Called when the command is initially scheduled.`
   @Override
   public void initialize() {}
 
