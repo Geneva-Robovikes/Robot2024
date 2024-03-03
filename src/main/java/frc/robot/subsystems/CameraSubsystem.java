@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Constants;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -20,6 +23,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class CameraSubsystem extends SubsystemBase {
   AprilTagFieldLayout tagLayout;
@@ -27,6 +31,10 @@ public class CameraSubsystem extends SubsystemBase {
   Transform3d cameraPosition;
   PhotonPipelineResult result;
   PhotonPoseEstimator poseEstimator;
+  int speakerTargetId;
+  int ampTargetId;
+  Optional<Alliance> ally = DriverStation.getAlliance();
+  Transform3d fieldToCamera;
 
   /**
    * Creates a new camera with name, position, and pitch from the horizontal.
@@ -39,6 +47,21 @@ public class CameraSubsystem extends SubsystemBase {
     camera.setPipelineIndex(0);
     result = camera.getLatestResult();
     this.cameraPosition = cameraPosition;
+
+    if (ally.isPresent()){
+
+      if(ally.get() == Alliance.Red){
+        speakerTargetId = 4;
+        ampTargetId = 5;
+      }
+
+      if(ally.get() == Alliance.Blue){
+        speakerTargetId = 7;
+        ampTargetId = 6;
+      }
+    }
+    
+
 
     try {
       tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
@@ -74,6 +97,27 @@ public class CameraSubsystem extends SubsystemBase {
 
   public double getTargetPitch() {
     return result.getBestTarget().getPitch();
+  }
+
+  public int getSpeakerTargetId(){
+    return speakerTargetId;
+  }
+
+  public int getAmpTargetId(){
+    return ampTargetId;
+  }
+
+  public int getTargetIds(){
+    return result.getBestTarget().getFiducialId();
+
+  }
+
+  public Transform3d getLotaction(){
+    if (result.getMultiTagResult().estimatedPose.isPresent) {
+      fieldToCamera = result.getMultiTagResult().estimatedPose.best;
+      return fieldToCamera;
+    }
+    else 
   }
 
 
