@@ -128,11 +128,11 @@ public class DriveSubsystem extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, 3);
     setModuleStates(states);
   }
-
+/* 
   private ChassisSpeeds getRobotChassisSpeeds() {
     return kinematics.toChassisSpeeds(getModuleStates());
   }
-
+*/
   private void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
     ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
     SwerveModuleState[] targetStates = kinematics.toSwerveModuleStates(targetSpeeds);
@@ -211,7 +211,7 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
   }
-
+/* 
   public SwerveModuleState[] getModuleStates() {
     SwerveModuleState[] states = {
       frontLeftModule.getModuleState(), frontRightModule.getModuleState(),
@@ -219,7 +219,7 @@ public class DriveSubsystem extends SubsystemBase {
     };
     return states;
   }
-
+*/
   /**
    * Stops the swerve modules.
    */

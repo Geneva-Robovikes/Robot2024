@@ -28,13 +28,16 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class CameraSubsystem extends SubsystemBase {
   AprilTagFieldLayout tagLayout;
   PhotonCamera camera;
+
   Transform3d cameraPosition;
+
   PhotonPipelineResult result;
+
   PhotonPoseEstimator poseEstimator;
   int speakerTargetId;
   int ampTargetId;
   Optional<Alliance> ally = DriverStation.getAlliance();
-  Transform3d fieldToCamera;
+
 
   /**
    * Creates a new camera with name, position, and pitch from the horizontal.
@@ -42,11 +45,11 @@ public class CameraSubsystem extends SubsystemBase {
    * @param cameraPosition Position of the camera from robot center.
    * @param cameraPitch
    */
-  public CameraSubsystem(String cameraName, Transform3d cameraPosition) {
-    camera = new PhotonCamera(cameraName);
+  public CameraSubsystem(String name, Transform3d cameraPosition) {
+    camera = new PhotonCamera(name);
     camera.setPipelineIndex(0);
     result = camera.getLatestResult();
-    this.cameraPosition = cameraPosition;
+   this.cameraPosition = cameraPosition;
 
     if (ally.isPresent()){
 
@@ -75,6 +78,7 @@ public class CameraSubsystem extends SubsystemBase {
   public void periodic() {
     //System.out.println(camera.getLatestResult());
     result = camera.getLatestResult();
+ 
   }
 
   /**
@@ -91,11 +95,11 @@ public class CameraSubsystem extends SubsystemBase {
    * @return Skew angle.
    */
   //added by alex
-  public double getTargetSkew() {
+  public double getTarget1Skew() {
     return result.getBestTarget().getSkew();
   }
 
-  public double getTargetPitch() {
+  public double getTarget1Pitch() {
     return result.getBestTarget().getPitch();
   }
 
@@ -107,17 +111,17 @@ public class CameraSubsystem extends SubsystemBase {
     return ampTargetId;
   }
 
-  public int getTargetIds(){
+  public int getTarget1Ids(){
     return result.getBestTarget().getFiducialId();
-
   }
 
-  public Transform3d getLotaction(){
+  public Transform3d getLocation1(){
     if (result.getMultiTagResult().estimatedPose.isPresent) {
-      fieldToCamera = result.getMultiTagResult().estimatedPose.best;
-      return fieldToCamera;
+      return result.getMultiTagResult().estimatedPose.best;
     }
-    else 
+    return null;
+    
+  
   }
 
 
