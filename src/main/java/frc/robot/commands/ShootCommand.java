@@ -30,10 +30,11 @@ public class ShootCommand extends Command {
 
   @Override
   public void execute() {
-    if(timer.get() > delay) {
-      clawSubsystem.setIntake(1);
-    }
-    clawSubsystem.setOuttake();
+    //if(timer.get() > delay) {
+      //clawSubsystem.setIntake(1);
+    //}
+    //clawSubsystem.setOuttake();
+    clawSubsystem.getDistanceSensor();
   }
 
   // Called once the command ends or is interrupted.
