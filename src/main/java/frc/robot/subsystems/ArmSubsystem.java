@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmSubsystem extends SubsystemBase {
   TalonFX falcon1;
   TalonFX falcon2;
-  TalonFX falcon3;
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     falcon1 = new TalonFX(61);

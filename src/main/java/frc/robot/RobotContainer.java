@@ -5,13 +5,14 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmdownCommand;
-import frc.robot.commands.ArmupCommand;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.clawpivotdowncommand;
 import frc.robot.commands.clawpivotupcommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -35,13 +36,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private static final Command ArmupCommand = null;
-  private static final Command ArmdownCommand = null;
+  private static final Command joystickcommand = null;
   private static final Command clawpivotupcommand = null;
   private static final Command clawpivotdowncommand = null;
   /* ~~~Subsystems~~~ */
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  public final ArmSubsystem armSubsystem = new ArmSubsystem();
   
   /* ~~~~Commands~~~~ */
   public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, 32, .80);
@@ -51,6 +52,8 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
   private final CommandXboxController clawController = new CommandXboxController(1);
+
+  public final ArmCommand armCommand = new ArmCommand(armSubsystem);
   //private final CommandXboxController controlController = new CommandXboxController(
   //    OperatorConstants.kControlControllerPort);
   /**
@@ -112,10 +115,11 @@ public class RobotContainer {
 
    clawController.rightTrigger().whileTrue(intakeCommand);
    clawController.leftTrigger().whileTrue(shootCommand);
-   clawController.povUp().whileTrue(ArmupCommand);
-   clawController.povDown().whileTrue(ArmdownCommand);
-   clawController.povRight().whileTrue(clawpivotupcommand);
-   clawController.povLeft().whileTrue(clawpivotdowncommand);
+   clawConttroller.getRightY().whileTrue(armCommand)
+   //clawController.povUp().whileTrue(ArmupCommand);
+   //clawController.povDown().whileTrue(ArmdownCommand);
+   //clawController.povRight().whileTrue(clawpivotupcommand);
+   //clawController.povLeft().whileTrue(clawpivotdowncommand);
   }
 
   public Command getTeleopCommand() {
