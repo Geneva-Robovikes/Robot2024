@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -29,10 +30,10 @@ public class ClawSubsystem extends SubsystemBase {
   }
 
   public void setOuttake(){
-    outtake1.set(.95  );
+    outtake1.set(.95);
     outtake2.set(.95);
   }
-
+//outake needs more fine tuneing for power levels.
   public void setIntake(double speed){
     intake.set(speed);
   }

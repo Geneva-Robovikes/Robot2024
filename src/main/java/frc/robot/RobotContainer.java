@@ -5,13 +5,19 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmdownCommand;
+import frc.robot.commands.ArmupCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
+import frc.robot.commands.clawpivotdowncommand;
+import frc.robot.commands.clawpivotupcommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.wpilibj.PS4Controller.Axis;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +35,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  private static final Command ArmupCommand = null;
+  private static final Command ArmdownCommand = null;
+  private static final Command clawpivotupcommand = null;
+  private static final Command clawpivotdowncommand = null;
   /* ~~~Subsystems~~~ */
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
@@ -102,6 +112,10 @@ public class RobotContainer {
 
    clawController.rightTrigger().whileTrue(intakeCommand);
    clawController.leftTrigger().whileTrue(shootCommand);
+   clawController.povUp().whileTrue(ArmupCommand);
+   clawController.povDown().whileTrue(ArmdownCommand);
+   clawController.povRight().whileTrue(clawpivotupcommand);
+   clawController.povLeft().whileTrue(clawpivotdowncommand);
   }
 
   public Command getTeleopCommand() {
