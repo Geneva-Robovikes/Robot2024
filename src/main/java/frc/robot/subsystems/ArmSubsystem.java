@@ -11,16 +11,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmSubsystem extends SubsystemBase {
   TalonFX falcon1;
   TalonFX falcon2;
-  TalonFX falcon3;
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     falcon1 = new TalonFX(61);
-    falcon2 = new TalonFX(62);
+
   }
 
   public void setspeed(double speed) {
     falcon1.set(speed);
-    falcon2.set(speed);
+
   }
 
   @Override

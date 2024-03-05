@@ -12,12 +12,13 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.clawpivotdowncommand;
 import frc.robot.commands.clawpivotupcommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-/* 
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
-*/
+
 
 import edu.wpi.first.wpilibj.PS4Controller.Axis;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,17 +38,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private static final Command ArmupCommand = null;
   private static final Command ArmdownCommand = null;
   private static final Command clawpivotupcommand = null;
   private static final Command clawpivotdowncommand = null;
   /* ~~~Subsystems~~~ */
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  public final ArmSubsystem armSubsystem = new ArmSubsystem();
   
   /* ~~~~Commands~~~~ */
   public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, 32, .80);
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
+  public final ArmupCommand armUpCommand = new ArmupCommand(armSubsystem);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController = new CommandXboxController(
@@ -114,10 +116,8 @@ public class RobotContainer {
 
    clawController.rightTrigger().whileTrue(intakeCommand);
    clawController.leftTrigger().whileTrue(shootCommand);
-   clawController.povUp().whileTrue(ArmupCommand);
+   clawController.povUp().whileTrue(armUpCommand);
    clawController.povDown().whileTrue(ArmdownCommand);
-   clawController.povRight().whileTrue(clawpivotupcommand);
-   clawController.povLeft().whileTrue(clawpivotdowncommand);
   }
 
   public Command getTeleopCommand() {
