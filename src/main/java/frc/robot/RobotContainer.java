@@ -5,13 +5,12 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ArmCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
-import frc.robot.commands.clawpivotdowncommand;
-import frc.robot.commands.clawpivotupcommand;
+import frc.robot.commands.JoystickCommand;
+import frc.robot.commands.IntakeCommand;
+
+import frc.robot.subsystems.ClawPivotSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -24,7 +23,9 @@ import edu.wpi.first.wpilibj.PS4Controller.Axis;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -38,17 +39,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-
-  private static final Command joystickcommand = null;
-
-  private static final Command ArmdownCommand = null;
-
-  private static final Command clawpivotupcommand = null;
-  private static final Command clawpivotdowncommand = null;
   /* ~~~Subsystems~~~ */
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
   public final ArmSubsystem armSubsystem = new ArmSubsystem();
+  public final ClawPivotSubsystem clawPivotSubsystem = new ClawPivotSubsystem();
+
   
   /* ~~~~Commands~~~~ */
   public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, 32, .80);
@@ -58,7 +54,8 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController clawController = new CommandXboxController(1);
+  private final CommandXboxController controllController = new CommandXboxController(
+    OperatorConstants.kControlControllerPort);
 
 
   //private final CommandXboxController controlController = new CommandXboxController(
@@ -120,8 +117,8 @@ public class RobotContainer {
    //driverController.x().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
    //driverController.y().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
-   clawController.rightTrigger().whileTrue(intakeCommand);
-   clawController.leftTrigger().whileTrue(shootCommand);
+   controllController.rightTrigger().whileTrue(intakeCommand);
+   controllController.leftTrigger().whileTrue(shootCommand);
 
 
    //clawController.povUp().whileTrue(ArmupCommand);
@@ -134,7 +131,10 @@ public class RobotContainer {
   }
 
   public Command getTeleopCommand() {
-    return new TeleopCommand(driveSubsystem, driverController);
+    return new ParallelCommandGroup(
+    new TeleopCommand(driveSubsystem, driverController),
+    new JoystickCommand(controllController, armSubsystem, clawPivotSubsystem, 0.6, 0.6)
+    );
   }
 
   /**

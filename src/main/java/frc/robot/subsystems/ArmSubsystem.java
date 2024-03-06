@@ -21,7 +21,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   }
 
-  public void setspeed(double speed) {
+  public void setSpeed(double speed) {
     armMotor1.set(speed);
     armMotor2.set(-speed);
 
