@@ -37,11 +37,11 @@ public class JoystickCommand extends Command {
     double leftY = controller.getLeftY();
     double rightY = controller.getLeftY();
 
-    if(((leftY < 0) || (leftY > 0)) && Math.abs(leftY) > Constants.controllerDeadzone){
-      armSubsystem.setSpeed(leftY * maxArmSpeed);
-    } else armSubsystem.setSpeed(0);
+    if(((leftY < 0 && !armSubsystem.getBottomLimit()) || (leftY > 0 && !armSubsystem.getTopLimit())) && Math.abs(leftY) > Constants.controllerDeadzone){
+      armSubsystem.setArmSpeed(leftY * maxArmSpeed);
+    } else armSubsystem.setArmSpeed(0);
 
-    if (((rightY < 0 ) || (leftY > 0 )) && Math.abs(rightY) > Constants.controllerDeadzone){
+    if (((rightY < 0 && !clawPivotSubsystem.getBottomLimit()) || (leftY > 0 && !clawPivotSubsystem.getToplimit())) && Math.abs(rightY) > Constants.controllerDeadzone){
       clawPivotSubsystem.setSpeed(rightY);
     } else clawPivotSubsystem.setSpeed(0);
 
@@ -52,7 +52,7 @@ public class JoystickCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     clawPivotSubsystem.setSpeed(0);
-    armSubsystem.setSpeed(0);
+    armSubsystem.setArmSpeed(0);
   }
 
   // Returns true when the command should end.

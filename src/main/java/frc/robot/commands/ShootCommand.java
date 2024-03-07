@@ -34,7 +34,7 @@ public class ShootCommand extends Command {
       //clawSubsystem.setIntake(1);
     //}
     //clawSubsystem.setOuttake();
-    clawSubsystem.getDistanceSensor();
+    //clawSubsystem.getDistanceSensor();
   }
 
   // Called once the command ends or is interrupted.
