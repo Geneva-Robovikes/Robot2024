@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -43,11 +45,11 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public double getArmMotor1Angle(){
-    return armMotor1.getPosition().getValueAsDouble() * (2 * Math.PI);
+    return armMotor1.getPosition().getValueAsDouble() / Constants.armGearRatio * (2 * Math.PI);
   }
 
   public double getArmMotor2Angle() {
-    return armMotor2.getPosition().getValueAsDouble() * (2 * Math.PI);
+    return armMotor2.getPosition().getValueAsDouble() / Constants.armGearRatio * (2 * Math.PI);
   }
 
   public boolean getTopLimit(){
