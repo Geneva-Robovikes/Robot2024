@@ -16,34 +16,34 @@ public class IntakeCommand extends Command {
   private final double speed;
 
   public IntakeCommand(ClawSubsystem subsystem, double speed, double currentLimit, double delay) {
-    clawSubsystem = subsystem;
-    this.speed = speed;
-    this.delay = delay;
-    this.currentLimit = currentLimit;
+    clawSubsystem = subsystem; // the subsystem
+    this.speed = speed; // the speed
+    this.delay = delay; // the delay
+    this.currentLimit = currentLimit; // the current limit
 
-    addRequirements(subsystem);
+    addRequirements(subsystem); // adds the requirements 
   }
 
   @Override
-  public void initialize() {
-    timer.reset();
-    timer.start();
-    clawSubsystem.setIntake(0.5);
+  public void initialize() { // initialiazes
+    timer.reset(); // resets the timer
+    timer.start(); // starts the timer
+    clawSubsystem.setIntake(0.5); // sets the intake speed to .5
   }
 
   // Called once the command ends or is interrupted.
-  @Override
+  @Override // override
   public void end(boolean interrupted) {
-    clawSubsystem.disableMotors();
+    clawSubsystem.disableMotors(); // disables the motors
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(timer.get() > delay) {
-      return clawSubsystem.getClawMotorCurrent() > currentLimit;
-    }else {
-      return false;
+    if(timer.get() > delay) { // if the timer is more than the delay
+      return clawSubsystem.getClawMotorCurrent() > currentLimit; // if the clawsubsystem.getcla
+    }else { // else
+      return false; // returns false
     }
   }
 }

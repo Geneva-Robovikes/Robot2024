@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.JoystickCommand;
+import frc.robot.commands.AutoForwardsCommand;
 import frc.robot.commands.IntakeCommand;
 
 import frc.robot.subsystems.ClawPivotSubsystem;
@@ -68,6 +69,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     autoChooser.setDefaultOption("Test Auto", "Test Auto");
+    autoChooser.addOption("Forwards", "Forwards");
     
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -142,11 +144,16 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  /* 
+  
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
+
+    if(autoChooser.getSelected().equals("Forwards")) {
+      return new ParallelCommandGroup(
+      new AutoForwardsCommand(driveSubsystem, -0.6, 4.25, true));
+    }
+    
     PathPlannerPath testPath = PathPlannerPath.fromPathFile("Test Path");
-    return AutoBuilder.followPath();
-  }*/
+    return AutoBuilder.followPath(testPath);
+  }
   
 }
