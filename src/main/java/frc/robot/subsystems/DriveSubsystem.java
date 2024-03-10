@@ -75,6 +75,7 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.calibrate();
     setDefaultCommand(new StopCommand(this));
 
+    //configures auto
     AutoBuilder.configureHolonomic(
       this::getPose, 
       this::resetOdometry, 

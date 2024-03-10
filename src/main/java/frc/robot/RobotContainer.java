@@ -20,6 +20,8 @@ import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 
@@ -42,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final SendableChooser<Command> autoChooser;
 
   /* ~~~Subsystems~~~ */
   public final ClawPivotSubsystem clawPivotSubsystem = new ClawPivotSubsystem();
@@ -72,14 +75,13 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
 
-  SendableChooser<String> autoChooser = new SendableChooser<>();
+  
 
   public RobotContainer() {
-    autoChooser.setDefaultOption("Test Auto", "Test Auto");
-    autoChooser.addOption("Forwards", "Forwards");
-    
+    NamedCommands.registerCommand("autoforwards", new AutoForwardsCommand(driveSubsystem, 1, 1, false));
+    autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
+    
     // Configure the trigger bindings
     configureBindings();
   }
@@ -163,14 +165,16 @@ public class RobotContainer {
    */
   
   public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
 
-    if(autoChooser.getSelected().equals("Forwards")) {
+  /*  if(autoChooser.getSelected().equals("Forwards")) {
       return new ParallelCommandGroup(
       new AutoForwardsCommand(driveSubsystem, -0.6, 4.25, true));
     }
     
     PathPlannerPath testPath = PathPlannerPath.fromPathFile("Test Path");
     return AutoBuilder.followPath(testPath);
+    */
   }
   
 }
