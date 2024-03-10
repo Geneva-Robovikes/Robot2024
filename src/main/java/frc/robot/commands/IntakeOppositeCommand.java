@@ -4,36 +4,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClawSubsystem;
 
-public class ShootCommand extends Command {
-
+public class IntakeOppositeCommand extends Command {
   private final ClawSubsystem clawSubsystem;
-
-  private final Timer timer = new Timer();
-  private final double delay;
-
-  public ShootCommand(ClawSubsystem clawSubsystem, double delay) {
+  
+  public IntakeOppositeCommand(ClawSubsystem clawSubsystem) {
     this.clawSubsystem = clawSubsystem;
-    this.delay = delay;
 
     addRequirements(clawSubsystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    timer.reset();
-    timer.start();
-  }
+  public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(timer.get() > delay) {
-      clawSubsystem.setIntake(.80);
-    }
-    clawSubsystem.setOuttake(.9);
+    clawSubsystem.setOuttake(-.5);
+    clawSubsystem.setIntake(-.5);
   }
 
   // Called once the command ends or is interrupted.
