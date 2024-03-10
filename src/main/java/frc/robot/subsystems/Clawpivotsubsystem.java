@@ -16,7 +16,7 @@ public class ClawPivotSubsystem extends SubsystemBase {
   DigitalInput bottomLimitSwitch;
   /** Creates a new Clawpivotsubsystem. */
   public ClawPivotSubsystem() {
-    falcon1 = new TalonFX(63);
+    falcon1 = new TalonFX(10);
     topLimitSwitch = new DigitalInput(1);
     bottomLimitSwitch = new DigitalInput(2);
   }
@@ -24,11 +24,17 @@ public void setSpeed(double speed) {
   falcon1.set(speed);
 }
 public boolean getToplimit(){
-  return topLimitSwitch.get();
+  //return topLimitSwitch.get();
+  return false;
 }
 
 public boolean getBottomLimit(){
-  return bottomLimitSwitch.get();
+  //return bottomLimitSwitch.get();
+  return false;
+}
+
+public double getPosition() {
+  return falcon1.getPosition().getValueAsDouble();
 }
   @Override
   public void periodic() {

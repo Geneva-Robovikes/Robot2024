@@ -75,7 +75,7 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.calibrate();
     setDefaultCommand(new StopCommand(this));
 
-    /*AutoBuilder.configureHolonomic(
+    AutoBuilder.configureHolonomic(
       this::getPose, 
       this::resetOdometry, 
       this::getRobotChassisSpeeds, 
@@ -94,7 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
         }
         return false;
       }, 
-      this);*/
+      this);
   }
   
   //Updates the odometry's position of the swerve drive on the field.

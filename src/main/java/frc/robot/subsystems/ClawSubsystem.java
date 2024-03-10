@@ -7,11 +7,15 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
+
+import org.w3c.dom.ranges.RangeException;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,6 +25,7 @@ public class ClawSubsystem extends SubsystemBase {
   private final CANSparkMax outtake2;
 
   private final Rev2mDistanceSensor distanceSensor; 
+  
   //intake can is 53, shoot is 52 (nNEEDS TO BE NEGATIVE), shoot2 is 51 (POSITIVE)
   /** Creates a new IntakeSubsystem. */
   public ClawSubsystem() {
@@ -29,6 +34,9 @@ public class ClawSubsystem extends SubsystemBase {
     outtake2  = new CANSparkMax(51, MotorType.kBrushless);
 
     distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
+
+    distanceSensor.setAutomaticMode(true);
+    distanceSensor.setEnabled(true);
 
     intake.setIdleMode(IdleMode.kBrake);
     outtake1.setIdleMode(IdleMode.kBrake);
@@ -39,12 +47,28 @@ public class ClawSubsystem extends SubsystemBase {
   }
 
   public void setOuttake(){
-    outtake1.set(.95);
-    outtake2.set(.95);
+    outtake1.set(.9);
+    outtake2.set(.9);
   }
-//outake needs more fine tuneing for power levels.
+
   public void setIntake(double speed){
     intake.set(speed);
+  }
+
+  public double getDistanceSensor() throws Exception {
+    boolean isValid = distanceSensor.isRangeValid();  
+
+    distanceSensor.setRangeProfile(RangeProfile.kHighAccuracy);
+
+
+    if(isValid) {
+      System.out.println("Range" + distanceSensor.getRange() + " Timestamp " + distanceSensor.getTimestamp());
+    } else {
+      System.out.println("Range Invalid");
+      throw new Exception();
+    }
+
+    return distanceSensor.getRange();
   }
 
   public void disableMotors(){
@@ -52,18 +76,6 @@ public class ClawSubsystem extends SubsystemBase {
     outtake1.set(0);
     outtake2.set(0);
   }
-
-  public double getClawMotorCurrent() {
-    return intake.getOutputCurrent();
-  }
-
-  public void getDistanceSensor() {
-    if(distanceSensor.isRangeValid()) {
-      System.out.println("Range" + distanceSensor.getRange() + " Timestamp " + distanceSensor.getTimestamp());
-    }
-  }
-
-
 
   @Override
   public void periodic() {

@@ -5,12 +5,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 
 public class StopCommand extends Command  {
-    DriveSubsystem driveSubsystem;
+    private final DriveSubsystem driveSubsystem;
 
-    public StopCommand(DriveSubsystem drive) {
-        driveSubsystem = drive;
+    public StopCommand(DriveSubsystem driveSubsystem) {
+        this.driveSubsystem = driveSubsystem;
 
-        addRequirements(drive);
+        addRequirements(driveSubsystem);
     }
 
     public void execute(){

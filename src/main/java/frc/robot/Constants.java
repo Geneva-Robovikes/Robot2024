@@ -42,4 +42,7 @@ public final class Constants {
   public static final double armGearRatio = 1280.0;
   public static final double clawGearRatio = 396.19;
 
+  public static final double maxArmSpeed = 0.6;
+  public static final double maxPivotSpeed = 0.6;
+
 }

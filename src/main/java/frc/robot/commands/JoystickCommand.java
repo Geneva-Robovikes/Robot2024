@@ -11,20 +11,17 @@ import frc.robot.subsystems.ClawPivotSubsystem;
 import frc.robot.Constants;
 
 public class JoystickCommand extends Command {
-  CommandXboxController controller;
-  ArmSubsystem armSubsystem;
-  ClawPivotSubsystem clawPivotSubsystem;
-  double maxArmSpeed;
-  double maxPivotSpeed;
+  private final ClawPivotSubsystem clawPivotSubsystem;
+  private final ArmSubsystem armSubsystem;
+
+  private final CommandXboxController controller;
 
   /** Creates a new JoystickCommand. */
-  public JoystickCommand(CommandXboxController controller, ArmSubsystem armSubsystem, ClawPivotSubsystem clawpivotsubsystem, double maxArmSpeed, double maxPivotSpeed) {
+  public JoystickCommand(CommandXboxController controller, ArmSubsystem armSubsystem, ClawPivotSubsystem clawpivotsubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.controller = controller;
     this.armSubsystem = armSubsystem;
     this.clawPivotSubsystem = clawpivotsubsystem;
-    this.maxArmSpeed = maxArmSpeed;
-    this.maxPivotSpeed = maxPivotSpeed;
   }
 
   // Called when the command is initially scheduled.
@@ -35,14 +32,15 @@ public class JoystickCommand extends Command {
   @Override
   public void execute() {
     double leftY = controller.getLeftY();
-    double rightY = controller.getLeftY();
+    double rightY = controller.getRightY();
+  
 
     if(((leftY < 0 && !armSubsystem.getBottomLimit()) || (leftY > 0 && !armSubsystem.getTopLimit())) && Math.abs(leftY) > Constants.controllerDeadzone){
-      armSubsystem.setArmSpeed(leftY * maxArmSpeed);
+      armSubsystem.setArmSpeed(leftY * Constants.maxArmSpeed);
     } else armSubsystem.setArmSpeed(0);
 
-    if (((rightY < 0 && !clawPivotSubsystem.getBottomLimit()) || (leftY > 0 && !clawPivotSubsystem.getToplimit())) && Math.abs(rightY) > Constants.controllerDeadzone){
-      clawPivotSubsystem.setSpeed(rightY);
+    if (((rightY < 0 && !clawPivotSubsystem.getBottomLimit()) || (rightY > 0 && !clawPivotSubsystem.getToplimit())) && Math.abs(rightY) > Constants.controllerDeadzone){
+      clawPivotSubsystem.setSpeed(rightY * Constants.maxPivotSpeed);
     } else clawPivotSubsystem.setSpeed(0);
 
 

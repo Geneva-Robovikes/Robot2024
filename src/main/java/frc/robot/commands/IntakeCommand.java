@@ -10,24 +10,18 @@ import frc.robot.subsystems.ClawSubsystem;
 
 public class IntakeCommand extends Command {
   private final ClawSubsystem clawSubsystem;
-  private final Timer timer = new Timer();
-  private final double currentLimit;
+
   private final double delay;
-  private final double speed;
 
-  public IntakeCommand(ClawSubsystem subsystem, double speed, double currentLimit, double delay) {
-    clawSubsystem = subsystem; // the subsystem
-    this.speed = speed; // the speed
+  public IntakeCommand(ClawSubsystem clawSubsystem, double speed, double delay) {
+    this.clawSubsystem = clawSubsystem; // the subsystem
     this.delay = delay; // the delay
-    this.currentLimit = currentLimit; // the current limit
-
-    addRequirements(subsystem); // adds the requirements 
+    
+    addRequirements(clawSubsystem); // adds the requirements 
   }
 
   @Override
   public void initialize() { // initialiazes
-    timer.reset(); // resets the timer
-    timer.start(); // starts the timer
     clawSubsystem.setIntake(0.5); // sets the intake speed to .5
   }
 
@@ -40,10 +34,14 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(timer.get() > delay) { // if the timer is more than the delay
-      return clawSubsystem.getClawMotorCurrent() > currentLimit; // if the clawsubsystem.getcla
-    }else { // else
-      return false; // returns false
+    try {
+      if(clawSubsystem.getDistanceSensor() < 5.0) { // if the timer is more than the delay
+        return true;
+      }else { // else
+        return false; // returns false
+      }
+    } catch (Exception e) {
+      return false;
     }
   }
 }

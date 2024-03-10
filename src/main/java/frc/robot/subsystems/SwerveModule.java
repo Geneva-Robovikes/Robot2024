@@ -30,7 +30,7 @@ import frc.robot.Constants;
 
 public class SwerveModule extends SubsystemBase {
     TalonFX driveMotor;
-    public TalonFX turnMotor;
+    TalonFX turnMotor;
     CANcoder encoder;
     double offset;
     String moduleName;
@@ -40,7 +40,8 @@ public class SwerveModule extends SubsystemBase {
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
     //These are feedback controllers, so they correct for error
     ProfiledPIDController drivePID = new ProfiledPIDController(3.1679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
-    PIDController turnPID = new PIDController(6.1807, 0, 0.23405);
+    //PIDController turnPID = new PIDController(6.1807, 0, 0.23405);
+    PIDController turnPID = new PIDController(2.3, .3, 0);
     //ki 0.027342 0.48255
 
     //Feedforward controllers anticipate motion
@@ -191,9 +192,9 @@ public class SwerveModule extends SubsystemBase {
      * @return The angle of the wheel in radians.
      */
     public double getCurrentAngle() {
-        //return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio * 2 * Math.PI;
-        SmartDashboard.putNumber(moduleName, encoder.getAbsolutePosition().getValueAsDouble());
-        return (encoder.getAbsolutePosition().getValueAsDouble() - offset) * 2 * Math.PI;
+        return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio * 2 * Math.PI;
+        //SmartDashboard.putNumber(moduleName, encoder.getAbsolutePosition().getValueAsDouble());
+        //return (encoder.getAbsolutePosition().getValueAsDouble() - offset) * 2 * Math.PI;
     }
 
     public double getAngularVelocity() {

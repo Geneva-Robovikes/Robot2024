@@ -4,42 +4,32 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClawSubsystem;
 
-public class ShootCommand extends Command {
-
+public class AmpShootCommand extends Command {
   private final ClawSubsystem clawSubsystem;
 
-  private final Timer timer = new Timer();
-  private final double delay;
-
-  public ShootCommand(ClawSubsystem clawSubsystem, double delay) {
+  public AmpShootCommand(ClawSubsystem clawSubsystem) {
     this.clawSubsystem = clawSubsystem;
-    this.delay = delay;
 
     addRequirements(clawSubsystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    timer.reset();
-    timer.start();
-  }
+  public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(timer.get() > delay) {
-      clawSubsystem.setIntake(.80);
-    }
-    clawSubsystem.setOuttake();
+    clawSubsystem.setIntake(-1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    clawSubsystem.disableMotors();
+    clawSubsystem.setIntake(0);
   }
 
   // Returns true when the command should end.

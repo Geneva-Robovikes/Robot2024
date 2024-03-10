@@ -8,7 +8,10 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.JoystickCommand;
+import frc.robot.commands.PresetCommand;
+import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AutoForwardsCommand;
+import frc.robot.commands.ExtentionCommand;
 import frc.robot.commands.IntakeCommand;
 
 import frc.robot.subsystems.ClawPivotSubsystem;
@@ -41,15 +44,19 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   /* ~~~Subsystems~~~ */
+  public final ClawPivotSubsystem clawPivotSubsystem = new ClawPivotSubsystem();
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
   public final ArmSubsystem armSubsystem = new ArmSubsystem();
-  public final ClawPivotSubsystem clawPivotSubsystem = new ClawPivotSubsystem();
 
   
   /* ~~~~Commands~~~~ */
-  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, 32, .80);
+  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .80);
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
+  public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
+
+  /* ~~~~Presets~~~~ */
+  public final PresetCommand presetCommand = new PresetCommand(clawSubsystem, armSubsystem, clawPivotSubsystem, 0);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -75,10 +82,6 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-  }
-
-  public void checkLimitSwitch() {
-
   }
 
   public void encoderTest() {
@@ -118,9 +121,23 @@ public class RobotContainer {
    //driverController.b().whileTrue(driveSubsystem.turnSysIdDynamic(SysIdRoutine.Direction.kReverse));
    //driverController.x().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
    //driverController.y().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+     controllController.leftBumper().whileTrue(ampShootCommand);
+     controllController.rightTrigger().whileTrue(intakeCommand);
+     controllController.leftTrigger().whileTrue(shootCommand);
 
+    
+    controllController.povDown().whileTrue(new ExtentionCommand(armSubsystem, 0));
+    controllController.povUp().whileTrue(new ExtentionCommand(armSubsystem, 1));
+
+    controllController.a().whileTrue(presetCommand);
+   /* 
    controllController.rightTrigger().whileTrue(intakeCommand);
    controllController.leftTrigger().whileTrue(shootCommand);
+   controllController.leftBumper().whileTrue(ampShootCommand);
+
+   controllController.povDown().whileTrue(new ExtentionCommand(armSubsystem, 0));
+   controllController.povUp().whileTrue(new ExtentionCommand(armSubsystem, 1));
+   */
 
 
    //clawController.povUp().whileTrue(ArmupCommand);
@@ -135,7 +152,7 @@ public class RobotContainer {
   public Command getTeleopCommand() {
     return new ParallelCommandGroup(
     new TeleopCommand(driveSubsystem, driverController),
-    new JoystickCommand(controllController, armSubsystem, clawPivotSubsystem, 0.6, 0.6)
+    new JoystickCommand(controllController, armSubsystem, clawPivotSubsystem)
     );
   }
 
