@@ -52,11 +52,13 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public double getArmMotor1Position(){
-    return armMotorLeft.getPosition().getValueAsDouble() / Constants.armGearRatio * (2 * Math.PI);
+    //return armMotorLeft.getPosition().getValueAsDouble() / Constants.armGearRatio * (2 * Math.PI);
+    return armMotorLeft.getPosition().getValueAsDouble();
   }
 
   public double getArmMotor2Position() {
-    return armMotorRight.getPosition().getValueAsDouble() / Constants.armGearRatio * (2 * Math.PI);
+    //return armMotorRight.getPosition().getValueAsDouble() / Constants.armGearRatio * (2 * Math.PI);
+    return armMotorRight.getPosition().getValueAsDouble();
   }
 
   public boolean getTopLimit(){

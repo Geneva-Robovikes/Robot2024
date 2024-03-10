@@ -56,7 +56,7 @@ public class RobotContainer {
   public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
 
   /* ~~~~Presets~~~~ */
-  public final PresetCommand presetCommand = new PresetCommand(clawSubsystem, armSubsystem, clawPivotSubsystem, 0);
+  public final PresetCommand presetCommand = new PresetCommand(clawSubsystem, armSubsystem, clawPivotSubsystem, 0, 0, 0, 0);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed

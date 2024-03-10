@@ -16,12 +16,20 @@ public class PresetCommand extends Command {
 
   private final int mode;
 
-  public PresetCommand(ClawSubsystem clawSubsystem, ArmSubsystem armSubsystem, ClawPivotSubsystem clawPivotSubsystem, int mode) {
+  private final double goalClaw;
+  private final double goalArmMotor1;
+  private final double goalArmMotor2;
+
+  public PresetCommand(ClawSubsystem clawSubsystem, ArmSubsystem armSubsystem, ClawPivotSubsystem clawPivotSubsystem, int mode, double goalClaw, double goalArmMotor1, double goalArmMotor2) {
     this.clawPivotSubsystem = clawPivotSubsystem;
     this.clawSubsystem = clawSubsystem;
     this.armSubsystem = armSubsystem;
 
     this.mode = mode;
+
+    this.goalClaw = goalClaw;
+    this.goalArmMotor1 = goalArmMotor1;
+    this.goalArmMotor2 = goalArmMotor2;
   }
 
   // Called when the command is initially scheduled.
@@ -36,6 +44,10 @@ public class PresetCommand extends Command {
         System.out.println(clawPivotSubsystem.getPosition() + " " + armSubsystem.getArmMotor1Position() + " " + armSubsystem.getArmMotor2Position());
         break;
       case 1:
+        if ((clawPivotSubsystem.getPosition() != goalClaw) && (armSubsystem.getArmMotor1Position() != goalArmMotor1) && (armSubsystem.getArmMotor2Position() != goalArmMotor2)) {
+          clawPivotSubsystem.setSpeed(.4);
+          armSubsystem.setArmSpeed(.4);
+        }
         break;
     }
   }
