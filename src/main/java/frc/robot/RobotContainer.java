@@ -13,7 +13,7 @@ import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AutoForwardsCommand;
 import frc.robot.commands.ExtentionCommand;
 import frc.robot.commands.IntakeCommand;
-
+import frc.robot.commands.IntakeOppositeCommand;
 import frc.robot.subsystems.ClawPivotSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
@@ -51,6 +51,7 @@ public class RobotContainer {
 
   
   /* ~~~~Commands~~~~ */
+  public final IntakeOppositeCommand intakeOppositeCommand = new IntakeOppositeCommand(clawSubsystem);
   public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .80);
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
   public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
@@ -122,6 +123,7 @@ public class RobotContainer {
    //driverController.x().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
    //driverController.y().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
      controllController.leftBumper().whileTrue(ampShootCommand);
+     controllController.rightBumper().whileTrue(intakeOppositeCommand);
      controllController.rightTrigger().whileTrue(intakeCommand);
      controllController.leftTrigger().whileTrue(shootCommand);
 
