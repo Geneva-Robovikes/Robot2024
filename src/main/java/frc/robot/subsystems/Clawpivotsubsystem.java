@@ -12,18 +12,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClawPivotSubsystem extends SubsystemBase {
   TalonFX falcon1;
-  DigitalInput topLimitSwitch;
-  DigitalInput bottomLimitSwitch;
+  //DigitalInput topLimitSwitch;
+  //DigitalInput bottomLimitSwitch;
   /** Creates a new Clawpivotsubsystem. */
   public ClawPivotSubsystem() {
     falcon1 = new TalonFX(10);
-    topLimitSwitch = new DigitalInput(1);
-    bottomLimitSwitch = new DigitalInput(2);
+    //topLimitSwitch = new DigitalInput(1);
+    //bottomLimitSwitch = new DigitalInput(2);
   }
 public void setSpeed(double speed) {
   falcon1.set(-speed);
 }
-public boolean getToplimit(){
+/*public boolean getToplimit(){
   //return topLimitSwitch.get();
   return false;
 }
@@ -31,7 +31,7 @@ public boolean getToplimit(){
 public boolean getBottomLimit(){
   //return bottomLimitSwitch.get();
   return false;
-}
+}*/
 
 public double getPosition() {
   return falcon1.getPosition().getValueAsDouble();

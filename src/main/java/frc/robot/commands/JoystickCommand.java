@@ -35,11 +35,11 @@ public class JoystickCommand extends Command {
     double rightY = controller.getRightY();
   
 
-    if(((leftY < 0 && !armSubsystem.getBottomLimit()) || (leftY > 0 && !armSubsystem.getTopLimit())) && Math.abs(leftY) > Constants.controllerDeadzone){
+    if(((leftY < 0 ) || (leftY > 0 )) && Math.abs(leftY) > Constants.controllerDeadzone){
       armSubsystem.setArmSpeed(leftY * Constants.maxArmSpeed);
     } else armSubsystem.setArmSpeed(0);
 
-    if (((rightY < 0 && !clawPivotSubsystem.getBottomLimit()) || (rightY > 0 && !clawPivotSubsystem.getToplimit())) && Math.abs(rightY) > Constants.controllerDeadzone){
+    if (((rightY < 0 ) || (rightY > 0 && (clawPivotSubsystem.getPosition() > 1)) && Math.abs(rightY) > Constants.controllerDeadzone)){
       clawPivotSubsystem.setSpeed(rightY * Constants.maxPivotSpeed);
     } else clawPivotSubsystem.setSpeed(0);
 

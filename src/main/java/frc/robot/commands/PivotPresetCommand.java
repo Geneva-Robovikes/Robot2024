@@ -29,9 +29,12 @@ public class PivotPresetCommand extends Command {
   public void execute() {
     if ((clawPivotSubsystem.getPosition() != goal) && (clawPivotSubsystem.getPosition() < goal)) {
       clawPivotSubsystem.setSpeed(-.4);
+      if(clawPivotSubsystem.getPosition() == goal);
+      clawPivotSubsystem.setSpeed(0);
     } else if((clawPivotSubsystem.getPosition() != goal) && (clawPivotSubsystem.getPosition() > goal)) {
       clawPivotSubsystem.setSpeed(.4);
     }
+
   }
 
   // Called once the command ends or is interrupted.

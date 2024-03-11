@@ -17,8 +17,8 @@ public class ArmSubsystem extends SubsystemBase {
   TalonFX armMotorLeft;
   TalonFX armMotorRight;
   TalonFX extensionMotor;
-  DigitalInput topArmLimit;
-  DigitalInput bottomArmLimit;
+  //DigitalInput topArmLimit;
+  //DigitalInput bottomArmLimit;
 
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
@@ -30,8 +30,8 @@ public class ArmSubsystem extends SubsystemBase {
     armMotorRight.setNeutralMode(NeutralModeValue.Brake);
     extensionMotor.setNeutralMode(NeutralModeValue.Brake);
     
-    topArmLimit = new DigitalInput(3);
-    bottomArmLimit = new DigitalInput(4);
+    //topArmLimit = new DigitalInput(3);
+    //bottomArmLimit = new DigitalInput(4);
   }
 
   public void setArmSpeed(double speed) {
@@ -61,7 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
     return armMotorRight.getPosition().getValueAsDouble();
   }
 
-  public boolean getTopLimit(){
+  /*public boolean getTopLimit(){
     //return topArmLimit.get();
     return false;
   }
@@ -69,5 +69,5 @@ public class ArmSubsystem extends SubsystemBase {
   public boolean getBottomLimit(){
     //return bottomArmLimit.get();
     return false;
-  }
+  }*/
 }
