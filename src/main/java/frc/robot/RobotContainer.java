@@ -8,7 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.JoystickCommand;
-import frc.robot.commands.PresetCommand;
+import frc.robot.commands.PivotPresetCommand;
 import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AutoForwardsCommand;
 import frc.robot.commands.ExtentionCommand;
@@ -57,7 +57,7 @@ public class RobotContainer {
   public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
 
   /* ~~~~Presets~~~~ */
-  public final PresetCommand presetCommand = new PresetCommand(clawSubsystem, armSubsystem, clawPivotSubsystem, 0, 0, 0, 0);
+  public final PivotPresetCommand pivotPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -82);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -134,7 +134,7 @@ public class RobotContainer {
     controllController.povDown().whileTrue(new ExtentionCommand(armSubsystem, 0));
     controllController.povUp().whileTrue(new ExtentionCommand(armSubsystem, 1));
 
-    controllController.a().whileTrue(presetCommand);
+    controllController.a().whileTrue(pivotPresetCommand);
    /* 
    controllController.rightTrigger().whileTrue(intakeCommand);
    controllController.leftTrigger().whileTrue(shootCommand);
