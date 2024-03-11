@@ -27,11 +27,11 @@ public class JoystickCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
-
+//amongus
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftY = controller.getLeftY();
+    double leftY = controller.getLeftY(); 
     double rightY = controller.getRightY();
   
 
