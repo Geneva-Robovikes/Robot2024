@@ -28,10 +28,10 @@ public class PivotPresetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ((clawPivotSubsystem.getPosition() != (goal += 2.0)) && (clawPivotSubsystem.getPosition() < goal)) {
-      clawPivotSubsystem.setSpeed(-.4);
-    } else if((clawPivotSubsystem.getPosition() != (goal -= 2.0)) && (clawPivotSubsystem.getPosition() > goal)) {
-      clawPivotSubsystem.setSpeed(.4);
+    if ((clawPivotSubsystem.getPosition() < (goal -= 2.0)) ) {
+      clawPivotSubsystem.setSpeed(-.3);
+    } else if((clawPivotSubsystem.getPosition() > (goal += 2.0)) ) {
+      clawPivotSubsystem.setSpeed(.3);
     }
 
   }
