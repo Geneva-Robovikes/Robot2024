@@ -87,6 +87,9 @@ public class RobotContainer {
 
   public void encoderTest() {
         SmartDashboard.putNumber("Gyro", driveSubsystem.getGyroAngleY());
+        SmartDashboard.putNumber("arm 1", armSubsystem.getArmMotor1Position());
+        SmartDashboard.putNumber("arm 2", armSubsystem.getArmMotor2Position());
+        SmartDashboard.putNumber("pivot", clawPivotSubsystem.getPosition());
     
 
   }

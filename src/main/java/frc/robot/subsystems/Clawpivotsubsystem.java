@@ -21,7 +21,7 @@ public class ClawPivotSubsystem extends SubsystemBase {
     bottomLimitSwitch = new DigitalInput(2);
   }
 public void setSpeed(double speed) {
-  falcon1.set(speed);
+  falcon1.set(-speed);
 }
 public boolean getToplimit(){
   //return topLimitSwitch.get();
