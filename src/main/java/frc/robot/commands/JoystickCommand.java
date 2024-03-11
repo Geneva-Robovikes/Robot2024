@@ -39,7 +39,7 @@ public class JoystickCommand extends Command {
       armSubsystem.setArmSpeed(leftY * Constants.maxArmSpeed);
     } else armSubsystem.setArmSpeed(0);
 
-    if (((rightY < 0 ) || (rightY > 0 && (clawPivotSubsystem.getPosition() > 1)) && Math.abs(rightY) > Constants.controllerDeadzone)){
+    if (((rightY < 0 ) || (rightY > 0)) && Math.abs(rightY) > Constants.controllerDeadzone){
       clawPivotSubsystem.setSpeed(rightY * Constants.maxPivotSpeed);
     } else clawPivotSubsystem.setSpeed(0);
 

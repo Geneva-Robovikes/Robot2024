@@ -12,7 +12,8 @@ import frc.robot.subsystems.ClawSubsystem;
 public class PivotPresetCommand extends Command {
   private final ClawPivotSubsystem clawPivotSubsystem;
 
-  private final double goal;
+  private double goal;
+
 
   public PivotPresetCommand(ClawPivotSubsystem clawPivotSubsystem, double goal) {
     this.clawPivotSubsystem = clawPivotSubsystem;
@@ -27,11 +28,9 @@ public class PivotPresetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ((clawPivotSubsystem.getPosition() != goal) && (clawPivotSubsystem.getPosition() < goal)) {
+    if ((clawPivotSubsystem.getPosition() != (goal += 2.0)) && (clawPivotSubsystem.getPosition() < goal)) {
       clawPivotSubsystem.setSpeed(-.4);
-      if(clawPivotSubsystem.getPosition() == goal);
-      clawPivotSubsystem.setSpeed(0);
-    } else if((clawPivotSubsystem.getPosition() != goal) && (clawPivotSubsystem.getPosition() > goal)) {
+    } else if((clawPivotSubsystem.getPosition() != (goal -= 2.0)) && (clawPivotSubsystem.getPosition() > goal)) {
       clawPivotSubsystem.setSpeed(.4);
     }
 

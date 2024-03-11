@@ -41,7 +41,7 @@ public class SwerveModule extends SubsystemBase {
     //These are feedback controllers, so they correct for error
     ProfiledPIDController drivePID = new ProfiledPIDController(3.1679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
     //PIDController turnPID = new PIDController(6.1807, 0, 0.23405);
-    PIDController turnPID = new PIDController(2.3, .3, 0);
+    PIDController turnPID = new PIDController(2.3815, .0, 0);
     //ki 0.027342 0.48255
 
     //Feedforward controllers anticipate motion
