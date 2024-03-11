@@ -20,6 +20,8 @@ import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 
@@ -42,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final SendableChooser<Command> autoChooser;
 
   /* ~~~Subsystems~~~ */
   public final ClawPivotSubsystem clawPivotSubsystem = new ClawPivotSubsystem();
@@ -52,12 +55,12 @@ public class RobotContainer {
   
   /* ~~~~Commands~~~~ */
   public final IntakeOppositeCommand intakeOppositeCommand = new IntakeOppositeCommand(clawSubsystem);
+    public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
   public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .80);
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
-  public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
 
   /* ~~~~Presets~~~~ */
-  public final PivotPresetCommand pivotPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -82);
+  public final PivotPresetCommand pivotPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -82.0);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -73,23 +76,22 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
 
-  SendableChooser<String> autoChooser = new SendableChooser<>();
+  
 
   public RobotContainer() {
-    autoChooser.setDefaultOption("Test Auto", "Test Auto");
-    autoChooser.addOption("Forwards", "Forwards");
-    
+    NamedCommands.registerCommand("Auto Claw Pivot", pivotPresetCommand);
+    autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
+    
     // Configure the trigger bindings
     configureBindings();
   }
 
   public void encoderTest() {
         SmartDashboard.putNumber("Gyro", driveSubsystem.getGyroAngleY());
-        SmartDashboard.putNumber("arm 1", armSubsystem.getArmMotor1Position());
-        SmartDashboard.putNumber("arm 2", armSubsystem.getArmMotor2Position());
-        SmartDashboard.putNumber("pivot", clawPivotSubsystem.getPosition());
+        SmartDashboard.putNumber("Pivot Position", clawPivotSubsystem.getPosition());
+        SmartDashboard.putNumber("Arm1 Positon", armSubsystem.getArmMotor1Position());
+        SmartDashboard.putNumber("Arm2 Position", armSubsystem.getArmMotor2Position());
     
 
   }
@@ -125,10 +127,11 @@ public class RobotContainer {
    //driverController.b().whileTrue(driveSubsystem.turnSysIdDynamic(SysIdRoutine.Direction.kReverse));
    //driverController.x().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
    //driverController.y().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-     controllController.leftBumper().whileTrue(ampShootCommand);
-     controllController.rightBumper().whileTrue(intakeOppositeCommand);
-     controllController.rightTrigger().whileTrue(intakeCommand);
-     controllController.leftTrigger().whileTrue(shootCommand);
+    controllController.leftBumper().whileTrue(ampShootCommand);
+    controllController.rightBumper().whileTrue(intakeOppositeCommand);
+    
+    controllController.rightTrigger().whileTrue(intakeCommand);
+    controllController.leftTrigger().whileTrue(shootCommand);
 
     
     controllController.povDown().whileTrue(new ExtentionCommand(armSubsystem, 0));
@@ -168,14 +171,17 @@ public class RobotContainer {
    */
   
   public Command getAutonomousCommand() {
+    
+    return autoChooser.getSelected();
 
-    if(autoChooser.getSelected().equals("Forwards")) {
+  /*  if(autoChooser.getSelected().equals("Forwards")) {
       return new ParallelCommandGroup(
       new AutoForwardsCommand(driveSubsystem, -0.6, 4.25, true));
     }
     
     PathPlannerPath testPath = PathPlannerPath.fromPathFile("Test Path");
     return AutoBuilder.followPath(testPath);
+    */
   }
   
 }
