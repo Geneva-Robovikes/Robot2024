@@ -5,24 +5,33 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmdownCommand;
-import frc.robot.commands.ArmupCommand;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleopCommand;
-import frc.robot.commands.clawpivotdowncommand;
-import frc.robot.commands.clawpivotupcommand;
+import frc.robot.commands.JoystickCommand;
+import frc.robot.commands.PivotPresetCommand;
+import frc.robot.commands.AmpShootCommand;
+import frc.robot.commands.AutoForwardsCommand;
+import frc.robot.commands.ExtentionCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeOppositeCommand;
+import frc.robot.subsystems.ClawPivotSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-import edu.wpi.first.wpilibj.PS4Controller.Axis;
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -35,48 +44,62 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final SendableChooser<Command> autoChooser;
 
-  private static final Command ArmupCommand = null;
-  private static final Command ArmdownCommand = null;
-  private static final Command clawpivotupcommand = null;
-  private static final Command clawpivotdowncommand = null;
   /* ~~~Subsystems~~~ */
+  public final ClawPivotSubsystem clawPivotSubsystem = new ClawPivotSubsystem();
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  public final ArmSubsystem armSubsystem = new ArmSubsystem();
+
   
   /* ~~~~Commands~~~~ */
-  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, 32, .80);
+  public final IntakeOppositeCommand intakeOppositeCommand = new IntakeOppositeCommand(clawSubsystem);
+    public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
+  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .80);
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
+
+  /* ~~~~Presets~~~~ */
+  public final PivotPresetCommand pivotPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -80.0);
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController clawController = new CommandXboxController(1);
+  private final CommandXboxController controllController = new CommandXboxController(
+    OperatorConstants.kControlControllerPort);
+
+    private HttpCamera camera1;
+    private HttpCamera camera2;
+
+
   //private final CommandXboxController controlController = new CommandXboxController(
   //    OperatorConstants.kControlControllerPort);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
 
-  SendableChooser<String> autoChooser = new SendableChooser<>();
+  
 
   public RobotContainer() {
-    autoChooser.setDefaultOption("Test Auto", "Test Auto");
-    
+    NamedCommands.registerCommand("Auto Claw Pivot", pivotPresetCommand);
+    //NamedCommands.registerCommand("auto shoot", );
+    autoChooser = AutoBuilder.buildAutoChooser();
+   // ShuffleboardContainer.add
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
-    NamedCommands.registerCommand("Shoot", shootCommand);
+    camera1 = new HttpCamera("camera 1", "http://photonvision.local:5800");
+    camera2 = new HttpCamera("camera2", "http://photonvision.local:5800");
 
     // Configure the trigger bindings
     configureBindings();
   }
 
-  public void checkLimitSwitch() {
-
-  }
-
   public void encoderTest() {
         SmartDashboard.putNumber("Gyro", driveSubsystem.getGyroAngleY());
+        SmartDashboard.putNumber("Pivot Position", clawPivotSubsystem.getPosition());
+        SmartDashboard.putNumber("Arm1 Positon", armSubsystem.getArmMotor1Position());
+        SmartDashboard.putNumber("Arm2 Position", armSubsystem.getArmMotor2Position());
+        
     
 
   }
@@ -112,17 +135,41 @@ public class RobotContainer {
    //driverController.b().whileTrue(driveSubsystem.turnSysIdDynamic(SysIdRoutine.Direction.kReverse));
    //driverController.x().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
    //driverController.y().whileTrue(driveSubsystem.turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    controllController.leftBumper().whileTrue(ampShootCommand);
+    controllController.rightBumper().whileTrue(intakeOppositeCommand);
+    
+    controllController.rightTrigger().whileTrue(intakeCommand);
+    controllController.leftTrigger().whileTrue(shootCommand);
 
-   clawController.rightTrigger().whileTrue(intakeCommand);
-   clawController.leftTrigger().whileTrue(shootCommand);
-   clawController.povUp().whileTrue(ArmupCommand);
-   clawController.povDown().whileTrue(ArmdownCommand);
-   clawController.povRight().whileTrue(clawpivotupcommand);
-   clawController.povLeft().whileTrue(clawpivotdowncommand);
+    
+    controllController.povDown().whileTrue(new ExtentionCommand(armSubsystem, 0));
+    controllController.povUp().whileTrue(new ExtentionCommand(armSubsystem, 1));
+
+    controllController.a().whileTrue(pivotPresetCommand);
+   /* 
+   controllController.rightTrigger().whileTrue(intakeCommand);
+   controllController.leftTrigger().whileTrue(shootCommand);
+   controllController.leftBumper().whileTrue(ampShootCommand);
+
+   controllController.povDown().whileTrue(new ExtentionCommand(armSubsystem, 0));
+   controllController.povUp().whileTrue(new ExtentionCommand(armSubsystem, 1));
+   */
+
+
+   //clawController.povUp().whileTrue(ArmupCommand);
+   //clawController.povDown().whileTrue(ArmdownCommand);
+   //clawController.povRight().whileTrue(clawpivotupcommand);
+   //clawController.povLeft().whileTrue(clawpivotdowncommand);
+
+
+
   }
 
   public Command getTeleopCommand() {
-    return new TeleopCommand(driveSubsystem, driverController);
+    return new ParallelCommandGroup(
+    new TeleopCommand(driveSubsystem, driverController),
+    new JoystickCommand(controllController, armSubsystem, clawPivotSubsystem)
+    );
   }
 
   /**
@@ -130,9 +177,19 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    PathPlannerPath testPath = PathPlannerPath.fromPathFile(autoChooser.getSelected());
+    
+    return autoChooser.getSelected();
+
+  /*  if(autoChooser.getSelected().equals("Forwards")) {
+      return new ParallelCommandGroup(
+      new AutoForwardsCommand(driveSubsystem, -0.6, 4.25, true));
+    }
+    
+    PathPlannerPath testPath = PathPlannerPath.fromPathFile("Test Path");
     return AutoBuilder.followPath(testPath);
+    */
   }
+  
 }
