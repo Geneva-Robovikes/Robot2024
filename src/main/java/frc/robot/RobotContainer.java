@@ -86,6 +86,7 @@ public class RobotContainer {
   public RobotContainer() {
     NamedCommands.registerCommand("Auto Claw Pivot Up", pivotUpPresetCommand);
     NamedCommands.registerCommand("Auto Claw Pivot Down", pivotDownPresetCommand);
+    NamedCommands.registerCommand("Shoot", shootCommand);
 
     //NamedCommands.registerCommand("auto shoot", );
     autoChooser = AutoBuilder.buildAutoChooser();
