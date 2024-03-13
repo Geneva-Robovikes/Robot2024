@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.6699236223008809,
+      "y": 6.593200975274989
+    },
+    "rotation": -120.34324888423961
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Claw Pivot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path 3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
