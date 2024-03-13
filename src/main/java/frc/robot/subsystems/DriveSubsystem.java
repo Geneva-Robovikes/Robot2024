@@ -81,9 +81,9 @@ public class DriveSubsystem extends SubsystemBase {
       this::getRobotChassisSpeeds, 
       this::driveRobotRelative, 
       new HolonomicPathFollowerConfig(
-        new PIDConstants(5, 0, 0),
-        new PIDConstants(5, 0, 0),
-        4.5,
+        new PIDConstants(0, 0, 0),
+        new PIDConstants(2.3815, 0, 0),
+        5,
         0.3048,
         new ReplanningConfig()
       ), 
@@ -263,7 +263,7 @@ public class DriveSubsystem extends SubsystemBase {
       },
       this)
   );
-
+/*
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return routine.quasistatic(direction);
   }
@@ -278,6 +278,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Command turnSysIdDynamic(SysIdRoutine.Direction direction) {
     return backRightModule.turnRoutine.dynamic(direction);
-  }
+  }*/
 
 }

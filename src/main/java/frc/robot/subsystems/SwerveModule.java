@@ -39,7 +39,7 @@ public class SwerveModule extends SubsystemBase {
     //PID controllers allow for accurate position/velocity tracking
     //Profiled PID controller is an extension of PID controllers that allows for velocity and acceleration constraints
     //These are feedback controllers, so they correct for error
-    ProfiledPIDController drivePID = new ProfiledPIDController(3.1679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
+    ProfiledPIDController drivePID = new ProfiledPIDController(0, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleAcceleration));
     //PIDController turnPID = new PIDController(6.1807, 0, 0.23405);
     PIDController turnPID = new PIDController(2.3815, .0, 0);
     //ki 0.027342 0.48255
@@ -144,7 +144,8 @@ public class SwerveModule extends SubsystemBase {
         // The calculate method gets the result from the controllers.
         // For feedback, they take in the current position and the target position.
         // For feedforward, they take in the target position.
-        double driveOutput = 0; //drivePID.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+        double driveOutput = drivePID.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+        //double driveOutput = 0;
         double driveFeed = driveFeedForward.calculate(state.speedMetersPerSecond);
         double turnOutput = turnPID.calculate(getCurrentAngle(), state.angle.getRadians());
         
@@ -200,7 +201,7 @@ public class SwerveModule extends SubsystemBase {
     public double getAngularVelocity() {
         return encoder.getVelocity().getValueAsDouble() * 2 * Math.PI;
     }
-
+/*
       // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
     private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
     // Mutable holder for unit-safe linear distance values, persisted to avoid reallocation.
@@ -220,5 +221,5 @@ public class SwerveModule extends SubsystemBase {
               log.motor("Back Right").angularVelocity(m_velocity.mut_replace(getAngularVelocity(), RadiansPerSecond));
           },
           this)
-        );
+        );*/
 }

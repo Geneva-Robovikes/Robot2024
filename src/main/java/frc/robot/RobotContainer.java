@@ -24,8 +24,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-
-
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -60,7 +60,7 @@ public class RobotContainer {
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
 
   /* ~~~~Presets~~~~ */
-  public final PivotPresetCommand pivotPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -82.0);
+  public final PivotPresetCommand pivotPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -80.0);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -68,6 +68,9 @@ public class RobotContainer {
       OperatorConstants.kDriverControllerPort);
   private final CommandXboxController controllController = new CommandXboxController(
     OperatorConstants.kControlControllerPort);
+
+    private HttpCamera camera1;
+    private HttpCamera camera2;
 
 
   //private final CommandXboxController controlController = new CommandXboxController(
@@ -80,9 +83,13 @@ public class RobotContainer {
 
   public RobotContainer() {
     NamedCommands.registerCommand("Auto Claw Pivot", pivotPresetCommand);
+    //NamedCommands.registerCommand("auto shoot", );
     autoChooser = AutoBuilder.buildAutoChooser();
+   // ShuffleboardContainer.add
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    
+    camera1 = new HttpCamera("camera 1", "http://photonvision.local:5800");
+    camera2 = new HttpCamera("camera2", "http://photonvision.local:5800");
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -92,6 +99,7 @@ public class RobotContainer {
         SmartDashboard.putNumber("Pivot Position", clawPivotSubsystem.getPosition());
         SmartDashboard.putNumber("Arm1 Positon", armSubsystem.getArmMotor1Position());
         SmartDashboard.putNumber("Arm2 Position", armSubsystem.getArmMotor2Position());
+        
     
 
   }

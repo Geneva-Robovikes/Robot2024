@@ -30,7 +30,8 @@ public class PivotPresetCommand extends Command {
   public void execute() {
     if ((clawPivotSubsystem.getPosition() < (goal -= 2.0)) ) {
       clawPivotSubsystem.setSpeed(-.3);
-    } else if((clawPivotSubsystem.getPosition() > (goal += 2.0)) ) {
+    } 
+    if((clawPivotSubsystem.getPosition() > (goal += 2.0)) ) {
       clawPivotSubsystem.setSpeed(.3);
     }
 

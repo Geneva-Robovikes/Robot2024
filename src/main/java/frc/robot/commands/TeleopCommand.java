@@ -41,7 +41,7 @@ public class TeleopCommand extends Command {
 
     // If the right controller is pressed, drive switches to robot centric
     if(rightTrigger > 0.5) {
-      isFieldCentric = false;
+      isFieldCentric = true;
     } else {
       isFieldCentric = true;
     }

@@ -33,7 +33,7 @@ public class ShootCommand extends Command {
     if(timer.get() > delay) {
       clawSubsystem.setIntake(.80);
     }
-    clawSubsystem.setOuttake(.9);
+    clawSubsystem.setOuttake(.95);
   }
 
   // Called once the command ends or is interrupted.
