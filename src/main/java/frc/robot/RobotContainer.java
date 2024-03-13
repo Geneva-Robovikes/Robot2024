@@ -65,6 +65,8 @@ public class RobotContainer {
     
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
+    NamedCommands.registerCommand("Shoot", shootCommand);
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -129,9 +131,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-    NamedCommands.registerCommand("Shoot", shootCommand);
-
     // An example command will be run in autonomous
     PathPlannerPath testPath = PathPlannerPath.fromPathFile("Test Path");
     return AutoBuilder.followPath(testPath);
