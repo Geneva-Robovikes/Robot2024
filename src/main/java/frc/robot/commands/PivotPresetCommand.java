@@ -34,6 +34,7 @@ public class PivotPresetCommand extends Command {
     if((clawPivotSubsystem.getPosition() > (goal += 2.0)) ) {
       clawPivotSubsystem.setSpeed(.3);
     }
+    
 
   }
 
@@ -46,6 +47,6 @@ public class PivotPresetCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (clawPivotSubsystem.getPosition() > (goal += 2)) && clawPivotSubsystem.getPosition() < (goal -= 2);
   }
 }

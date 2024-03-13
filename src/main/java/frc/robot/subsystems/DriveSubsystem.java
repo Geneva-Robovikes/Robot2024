@@ -83,7 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
       new HolonomicPathFollowerConfig(
         new PIDConstants(0, 0, 0),
         new PIDConstants(2.3815, 0, 0),
-        5,
+        3,
         0.3048,
         new ReplanningConfig()
       ), 

@@ -2,25 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 7.0
+      "x": 0.7284778050297884,
+      "y": 4.578937089400569
     },
-    "rotation": 179.73
+    "rotation": 120.96375653207355
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "New Path"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Auto Claw Pivot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path 1"
           }
         }
       ]
