@@ -60,7 +60,9 @@ public class RobotContainer {
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
 
   /* ~~~~Presets~~~~ */
-  public final PivotPresetCommand pivotPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -80.0);
+  public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -80.0);
+  public final PivotPresetCommand pivotDownPresetCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
+
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -82,7 +84,9 @@ public class RobotContainer {
   
 
   public RobotContainer() {
-    NamedCommands.registerCommand("Auto Claw Pivot", pivotPresetCommand);
+    NamedCommands.registerCommand("Auto Claw Pivot Up", pivotUpPresetCommand);
+    NamedCommands.registerCommand("Auto Claw Pivot Down", pivotDownPresetCommand);
+
     //NamedCommands.registerCommand("auto shoot", );
     autoChooser = AutoBuilder.buildAutoChooser();
    // ShuffleboardContainer.add
@@ -145,7 +149,7 @@ public class RobotContainer {
     controllController.povDown().whileTrue(new ExtentionCommand(armSubsystem, 0));
     controllController.povUp().whileTrue(new ExtentionCommand(armSubsystem, 1));
 
-    controllController.a().whileTrue(pivotPresetCommand);
+    controllController.a().whileTrue(pivotUpPresetCommand);
    /* 
    controllController.rightTrigger().whileTrue(intakeCommand);
    controllController.leftTrigger().whileTrue(shootCommand);

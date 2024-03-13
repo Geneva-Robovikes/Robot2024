@@ -18,6 +18,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Auto Claw Pivot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "path 3"
