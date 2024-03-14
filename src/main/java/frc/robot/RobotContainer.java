@@ -18,6 +18,7 @@ import frc.robot.subsystems.ClawPivotSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.ArmPresetCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -55,13 +56,15 @@ public class RobotContainer {
   
   /* ~~~~Commands~~~~ */
   public final IntakeOppositeCommand intakeOppositeCommand = new IntakeOppositeCommand(clawSubsystem);
-    public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
+  public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
   public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .80);
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
 
   /* ~~~~Presets~~~~ */
   public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -80.0);
   public final PivotPresetCommand pivotDownPresetCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
+  public final ArmPresetCommand ampArmCommand = new ArmPresetCommand(armSubsystem, 0);
+  public final PivotPresetCommand ampPivotCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
 
 
 
@@ -151,6 +154,7 @@ public class RobotContainer {
     controllController.povUp().whileTrue(new ExtentionCommand(armSubsystem, 1));
 
     controllController.a().whileTrue(pivotUpPresetCommand);
+    controllController.b().whileTrue(ampArmCommand.andThen(ampPivotCommand));
    /* 
    controllController.rightTrigger().whileTrue(intakeCommand);
    controllController.leftTrigger().whileTrue(shootCommand);
@@ -178,7 +182,8 @@ public class RobotContainer {
   }
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use this to pass the autonomous command to the main {@link Robot} cla
+   * ]]]]]]]]]]]]]]]]]]]]]]]]ss.
    *
    * @return the command to run in autonomous
    */
