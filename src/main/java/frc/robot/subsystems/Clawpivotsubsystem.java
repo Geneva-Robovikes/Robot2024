@@ -9,9 +9,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
 
 public class ClawPivotSubsystem extends SubsystemBase {
   TalonFX falcon1;
+  PIDController armPidController = new PIDController(1, 0, 0);
+
   //DigitalInput topLimitSwitch;
   //DigitalInput bottomLimitSwitch;
   /** Creates a new Clawpivotsubsystem. */
@@ -23,6 +26,8 @@ public class ClawPivotSubsystem extends SubsystemBase {
 public void setSpeed(double speed) {
   falcon1.set(-speed);
 }
+
+
 /*public boolean getToplimit(){
   //return topLimitSwitch.get();
   return false;

@@ -13,11 +13,12 @@ public class PivotPresetCommand extends Command {
   private final ClawPivotSubsystem clawPivotSubsystem;
 
   private double goal;
+  private double Kp;
 
 
   public PivotPresetCommand(ClawPivotSubsystem clawPivotSubsystem, double goal) {
     this.clawPivotSubsystem = clawPivotSubsystem;
-
+    Kp = .005;
     this.goal = goal;
   }
 
@@ -28,12 +29,17 @@ public class PivotPresetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ((clawPivotSubsystem.getPosition() < (goal -= 2.0)) ) {
+  /*  if ((clawPivotSubsystem.getPosition() < (goal -= 2.0)) ) {
       clawPivotSubsystem.setSpeed(-.3);
     } 
     if((clawPivotSubsystem.getPosition() > (goal += 2.0)) ) {
       clawPivotSubsystem.setSpeed(.3);
-    }
+    }*/
+    double currentPosition = clawPivotSubsystem.getPosition();
+    double error = goal - currentPosition;
+    double command = error * Kp;
+    clawPivotSubsystem.setSpeed(command);
+
     
 
   }
@@ -47,6 +53,6 @@ public class PivotPresetCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (clawPivotSubsystem.getPosition() > (goal += 2)) && clawPivotSubsystem.getPosition() < (goal -= 2);
+    return (clawPivotSubsystem.getPosition() == goal);
   }
 }

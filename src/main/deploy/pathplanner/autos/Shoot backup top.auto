@@ -20,6 +20,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Auto Claw Pivot Down"
           }
         },
