@@ -18,7 +18,7 @@ public class PivotPresetCommand extends Command {
 
   public PivotPresetCommand(ClawPivotSubsystem clawPivotSubsystem, double goal) {
     this.clawPivotSubsystem = clawPivotSubsystem;
-    Kp = .005;
+    Kp = .007;
     this.goal = goal;
   }
 
@@ -38,7 +38,7 @@ public class PivotPresetCommand extends Command {
     double currentPosition = clawPivotSubsystem.getPosition();
     double error = goal - currentPosition;
     double command = error * Kp;
-    clawPivotSubsystem.setSpeed(command);
+    clawPivotSubsystem.setSpeed(-command);
 
     
 
