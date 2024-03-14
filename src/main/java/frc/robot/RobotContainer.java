@@ -155,6 +155,7 @@ public class RobotContainer {
 
     controllController.a().whileTrue(pivotUpPresetCommand);
     controllController.b().whileTrue(ampArmCommand.andThen(ampPivotCommand));
+    controllController.y().whileTrue(pivotDownPresetCommand);
    /* 
    controllController.rightTrigger().whileTrue(intakeCommand);
    controllController.leftTrigger().whileTrue(shootCommand);

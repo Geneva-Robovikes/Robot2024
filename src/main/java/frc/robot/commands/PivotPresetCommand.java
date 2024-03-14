@@ -4,13 +4,16 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawPivotSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 
+
 public class PivotPresetCommand extends Command {
   private final ClawPivotSubsystem clawPivotSubsystem;
+  private final Timer timer = new Timer();
 
   private double goal;
   private double Kp;
@@ -18,7 +21,7 @@ public class PivotPresetCommand extends Command {
 
   public PivotPresetCommand(ClawPivotSubsystem clawPivotSubsystem, double goal) {
     this.clawPivotSubsystem = clawPivotSubsystem;
-    Kp = .007;
+    Kp = .01;
     this.goal = goal;
   }
 
@@ -53,6 +56,6 @@ public class PivotPresetCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (clawPivotSubsystem.getPosition() == goal);
+    return (clawPivotSubsystem.getPosition() == goal) || timer.get() == 3;
   }
 }
