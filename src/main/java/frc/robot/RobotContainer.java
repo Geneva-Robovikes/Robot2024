@@ -65,7 +65,7 @@ public class RobotContainer {
   public final PivotPresetCommand pivotDownPresetCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
   public final ArmPresetCommand ampArmCommand = new ArmPresetCommand(armSubsystem, 0);
   public final PivotPresetCommand ampPivotCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
-
+  public final PivotPresetCommand pivotIntakePresetCommand = new PivotPresetCommand(clawPivotSubsystem, -80.0);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -156,6 +156,7 @@ public class RobotContainer {
     controllController.a().whileTrue(pivotUpPresetCommand);
     controllController.b().whileTrue(ampArmCommand.andThen(ampPivotCommand));
     controllController.y().whileTrue(pivotDownPresetCommand);
+    controllController.x().whileTrue(pivotIntakePresetCommand);
    /* 
    controllController.rightTrigger().whileTrue(intakeCommand);
    controllController.leftTrigger().whileTrue(shootCommand);
