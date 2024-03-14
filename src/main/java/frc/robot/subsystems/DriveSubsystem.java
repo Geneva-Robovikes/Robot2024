@@ -41,6 +41,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   ADIS16448_IMU gyro = new ADIS16448_IMU();
 
+  ChassisSpeeds speeds;
+
   //Positions are based of of 25in square robot
   Translation2d frontLeftLocation = new Translation2d(0.3048, 0.3048);
   Translation2d frontRightLocation = new Translation2d(0.3048, -0.3048);
@@ -75,14 +77,20 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.calibrate();
     setDefaultCommand(new StopCommand(this));
 
+    speeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getRotation2d());
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+    
+    setModuleStates(states);
+
+
     AutoBuilder.configureHolonomic(
       this::getPose, 
       this::resetOdometry, 
       this::getRobotChassisSpeeds, 
       this::driveRobotRelative, 
       new HolonomicPathFollowerConfig(
-        new PIDConstants(5, 0, 0),
-        new PIDConstants(5, 0, 0),
+        new PIDConstants(0, 0, 0),
+        new PIDConstants(2.3815, 0, 0),
         3,
         0.3048,
         new ReplanningConfig()
@@ -118,7 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param isFieldCentric Decides whether the drive is field centric or robot centric.
    */
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
-    ChassisSpeeds speeds;
+    //ChassisSpeeds speeds;
 
     if(isFieldCentric) {
       speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, -yVelocity, angularVelocity, getRotation2d());

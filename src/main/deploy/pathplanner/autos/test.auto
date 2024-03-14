@@ -16,12 +16,6 @@
           "data": {
             "pathName": "New Path"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Auto Claw Pivot"
-          }
         }
       ]
     }
