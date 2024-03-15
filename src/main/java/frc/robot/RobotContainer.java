@@ -61,7 +61,7 @@ public class RobotContainer {
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
 
   /* ~~~~Presets~~~~ */
-  public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -80.0);
+  public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -82.0);
   public final PivotPresetCommand pivotDownPresetCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
   public final ArmPresetCommand ampArmCommand = new ArmPresetCommand(armSubsystem, 0);
   public final PivotPresetCommand ampPivotCommand = new PivotPresetCommand(clawPivotSubsystem, 0);

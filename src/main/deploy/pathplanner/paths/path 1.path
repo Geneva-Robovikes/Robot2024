@@ -20,8 +20,8 @@
         "y": 1.639517116409411
       },
       "prevControl": {
-        "x": 2.0869348443404436,
-        "y": 1.686360462592537
+        "x": 1.44283883432246,
+        "y": 1.6746496260467554
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.4925642412252,
+    "rotation": 1.684684317896312,
     "rotateFast": false
   },
   "reversed": false,
