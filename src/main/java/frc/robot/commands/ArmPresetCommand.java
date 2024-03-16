@@ -37,7 +37,7 @@ public class ArmPresetCommand extends Command {
     double currentPosition = armSubsystem.getArmMotor1Position();
     double error = goal - currentPosition;
     double command = error * Kp;
-    armSubsystem.setArmSpeed(command);
+    armSubsystem.setArmSpeed(-command);
   }
 
   // Called once the command ends or is interrupted.

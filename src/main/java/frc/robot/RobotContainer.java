@@ -57,11 +57,11 @@ public class RobotContainer {
   /* ~~~~Commands~~~~ */
   public final IntakeOppositeCommand intakeOppositeCommand = new IntakeOppositeCommand(clawSubsystem);
   public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
-  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .80);
+  public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .30);
   public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
 
   /* ~~~~Presets~~~~ */
-  public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -82.0);
+  public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -77.0);
   public final PivotPresetCommand pivotDownPresetCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
   public final ArmPresetCommand ampArmCommand = new ArmPresetCommand(armSubsystem, 0);
   public final PivotPresetCommand ampPivotCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
@@ -154,9 +154,9 @@ public class RobotContainer {
     controllController.povUp().whileTrue(new ExtentionCommand(armSubsystem, 1));
 
     controllController.a().whileTrue(pivotUpPresetCommand);
-    controllController.b().whileTrue(ampArmCommand.andThen(ampPivotCommand));
+    //controllController.b().whileTrue(ampArmCommand.andThen(ampPivotCommand));
     controllController.y().whileTrue(pivotDownPresetCommand);
-    controllController.x().whileTrue(pivotIntakePresetCommand);
+    //controllController.x().whileTrue(pivotIntakePresetCommand);
    /* 
    controllController.rightTrigger().whileTrue(intakeCommand);
    controllController.leftTrigger().whileTrue(shootCommand);
