@@ -128,6 +128,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
     //ChassisSpeeds speeds;
 
+    System.out.println(xVelocity);
+
     if(isFieldCentric) {
       speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, -yVelocity, angularVelocity, getRotation2d());
     } else {

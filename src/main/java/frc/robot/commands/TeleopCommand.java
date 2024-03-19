@@ -8,12 +8,15 @@ import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class TeleopCommand extends Command {
   private final DriveSubsystem driveSubsystem;
   private final CommandXboxController driveController;
+  private final Joystick driveJoystick;
 
   private final double maxSpeedXY = Constants.maxTranslationalDriveSpeed;
   private final double maxSpeedTheta = Constants.maxRotationalDriveSpeed;
@@ -24,18 +27,28 @@ public class TeleopCommand extends Command {
    * @param driveSubsystem the drive subsystem
    * @param driveController the controller to take input from
    */
-  public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController driveController) {
+  public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController driveController, Joystick driveJoystick) {
     this.driveSubsystem = driveSubsystem;
     this.driveController = driveController;
+    this.driveJoystick = driveJoystick;
+
     addRequirements(driveSubsystem);
   }
   
   @Override
   public void execute() {
     // Squares inputs so fine movements are easier to make
-    double x1 = Math.signum(driveController.getLeftX()) * Math.pow(driveController.getLeftX(), 2);
-    double y1 = Math.signum(-driveController.getLeftY()) * Math.pow(driveController.getLeftY(), 2);
-    double x2 = Math.signum(driveController.getRightX()) * Math.pow(driveController.getRightX(), 2);
+    /*
+    System.out.println(Math.signum(driveJoystick.getX()) * Math.pow(driveJoystick.getX(), 2));
+    System.out.println(Math.signum(-driveJoystick.getY()) * Math.pow(driveJoystick.getY(), 2));
+    System.out.println(Math.signum(driveJoystick.getZ()) * Math.pow(driveJoystick.getZ(), 2));
+    */
+
+
+    double x1 = Math.signum(-driveJoystick.getX()) * Math.pow(-driveJoystick.getX(), 2);
+    double y1 = Math.signum(driveJoystick.getY()) * Math.pow(-driveJoystick.getY(), 2);
+    double x2 = Math.signum(-driveJoystick.getZ()) * Math.pow(-driveJoystick.getZ(), 2);
+
     double rightTrigger = driveController.getRightTriggerAxis();
     boolean resetButton = driveController.y().getAsBoolean();
 
@@ -66,6 +79,14 @@ public class TeleopCommand extends Command {
     double vX = y1 * maxSpeedXY;  
     double vY = x1 * maxSpeedXY;
     double vTheta = x2 * maxSpeedTheta;
+    
+    // Switches inputs to speeds in meters per second, with ajustable max speed
+
+    //double speedLimiter = (3.5/2) * (driveJoystick.getThrottle() * -1) + 4.75;
+    //double avX = (vX/maxSpeedXY) * speedLimiter;
+    //double avY = (vY/maxSpeedXY) * speedLimiter;
+
+    //System.out.println(avY + " " + vY);
 
     // Sets the drive speeds
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, isFieldCentric);

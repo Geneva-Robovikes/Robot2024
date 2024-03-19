@@ -25,13 +25,15 @@ public final class Constants {
   public static final double swerveTurnGearRatio = 150.0 / 7.0;
   public static final double moduleMaxAngularVelocity = Math.PI;
   public static final double moduleMaxAngularAcceleration = 2 * Math.PI;
-  public static final double maxModuleVelocity = 4.5; 
+
+  public static final double maxModuleVelocity = 6.5;
   /*this variable changes robot speek 
   max speed is 16. speed is in m/s. do not make robot go too fast*/
 
   public static final double maxModuleAcceleration = 4.5;
-  //changes speed
-  public static final double maxTranslationalDriveSpeed = 4;
+  //changes speed ACTUALLY CHANGES SPEED
+  public static final double maxTranslationalDriveSpeed = 4.5;
+  public static final double minTranslationalDriveSpeed = 3;
   public static final double maxRotationalDriveSpeed = -Math.PI;
   public static final double controllerDeadzone = 0.1;
 

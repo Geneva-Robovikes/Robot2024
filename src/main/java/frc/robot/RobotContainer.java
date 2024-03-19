@@ -26,6 +26,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -69,8 +70,8 @@ public class RobotContainer {
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController driverController = new CommandXboxController(
-      OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final Joystick driverJoystick = new Joystick(2);
   private final CommandXboxController controllController = new CommandXboxController(
     OperatorConstants.kControlControllerPort);
 
@@ -107,6 +108,9 @@ public class RobotContainer {
         SmartDashboard.putNumber("Pivot Position", clawPivotSubsystem.getPosition());
         SmartDashboard.putNumber("Arm1 Positon", armSubsystem.getArmMotor1Position());
         SmartDashboard.putNumber("Arm2 Position", armSubsystem.getArmMotor2Position());
+
+        SmartDashboard.putNumber("Current Speed Setting", ((3.5/2) * (driverJoystick.getThrottle() * -1)) + 4.75);
+        SmartDashboard.putNumber("testing sut", (((Math.signum(driverJoystick.getY()) * Math.pow(driverJoystick.getY(), 2)) * Constants.maxTranslationalDriveSpeed)/Constants.maxTranslationalDriveSpeed) * ((driverJoystick.getThrottle() * -1) + 4.75));
         
     
 
@@ -178,7 +182,7 @@ public class RobotContainer {
 
   public Command getTeleopCommand() {
     return new ParallelCommandGroup(
-    new TeleopCommand(driveSubsystem, driverController),
+    new TeleopCommand(driveSubsystem, driverController, driverJoystick),
     new JoystickCommand(controllController, armSubsystem, clawPivotSubsystem)
     );
   }
