@@ -23,9 +23,9 @@ public class ClawPivotSubsystem extends SubsystemBase {
     //topLimitSwitch = new DigitalInput(1);
     //bottomLimitSwitch = new DigitalInput(2);
   }
-public void setSpeed(double speed) {
-  falcon1.set(-speed);
-}
+  public void setSpeed(double speed) {
+    falcon1.set(-speed);
+  }
 
 
 /*public boolean getToplimit(){
@@ -38,9 +38,15 @@ public boolean getBottomLimit(){
   return false;
 }*/
 
-public double getPosition() {
-  return falcon1.getPosition().getValueAsDouble();
-}
+  public double getPosition() {
+    return falcon1.getPosition().getValueAsDouble();
+  }
+
+  public double getPositionAsDegrees() {
+    return falcon1.getPosition().getValueAsDouble() * (180/Math.PI);
+  }
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
