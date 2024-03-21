@@ -22,6 +22,7 @@ public class CameraAlignCommand extends Command {
   double targetPitch;
   double targetDistance;
   double angularVelocity;
+  double Kp = .01;
 
   /** Creates a new CameraAlignCommand. */
   public CameraAlignCommand(CameraSubsystem cameraSubsystem, DriveSubsystem driveSubsystem, ClawPivotSubsystem clawPivotSubsystem) {
@@ -30,7 +31,7 @@ public class CameraAlignCommand extends Command {
     this.driveSubsystem = driveSubsystem;
     this.clawPivotSubsystem = clawPivotSubsystem;
 
-    controller = new PIDController(.01, 0, 0);
+    controller = new PIDController(.1, 0, 0);
   }
 
   // Called when the command is initially scheduled.
@@ -43,8 +44,9 @@ public class CameraAlignCommand extends Command {
     if(cameraSubsystem.hasTargets()){
       targetYaw = cameraSubsystem.getTarget1Yaw();
       targetPitch = cameraSubsystem.getTarget1Pitch();
-      
+
       angularVelocity = controller.calculate(targetYaw,0);
+
       driveSubsystem.setModuleStatesFromSpeeds(0, 0, angularVelocity, true);
     }
 
@@ -60,6 +62,6 @@ public class CameraAlignCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.atSetpoint();
+    return controller.atSetpoint() ;
   }
 }
