@@ -22,7 +22,7 @@ public class CameraAlignCommand extends Command {
   double targetPitch;
   double targetDistance;
   double angularVelocity;
-  double Kp = .01;
+
 
   /** Creates a new CameraAlignCommand. */
   public CameraAlignCommand(CameraSubsystem cameraSubsystem, DriveSubsystem driveSubsystem, ClawPivotSubsystem clawPivotSubsystem) {
@@ -31,7 +31,7 @@ public class CameraAlignCommand extends Command {
     this.driveSubsystem = driveSubsystem;
     this.clawPivotSubsystem = clawPivotSubsystem;
 
-    controller = new PIDController(.1, 0, 0);
+    controller = new PIDController(.06, 0, 0);
   }
 
   // Called when the command is initially scheduled.
