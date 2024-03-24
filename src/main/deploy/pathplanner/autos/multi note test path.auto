@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.1969112668610487,
-      "y": 5.562647359246215
+      "x": 0.65,
+      "y": 6.6
     },
-    "rotation": 180.0
+    "rotation": -120.0
   },
   "command": {
     "type": "sequential",
@@ -14,26 +14,73 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Auto Claw Pivot Up"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "note 1 path"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "autoIntake"
-                }
-              }
-            ]
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Claw Pivot Down"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Aim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top to Mid Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Aim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid to Bottom Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Aim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]

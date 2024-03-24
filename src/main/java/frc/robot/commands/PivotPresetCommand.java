@@ -42,12 +42,15 @@ public class PivotPresetCommand extends Command {
     if((clawPivotSubsystem.getPosition() > (goal += 2.0)) ) {
       clawPivotSubsystem.setSpeed(.3);
     }*/
+
+    /*
     double currentPosition = clawPivotSubsystem.getPosition();
     double error = goal - currentPosition;
     double command = error * Kp;
     clawPivotSubsystem.setSpeed(-command);
+    */
 
-    
+    clawPivotSubsystem.setClawAngle(goal);  
 
   }
 
