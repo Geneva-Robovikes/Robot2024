@@ -36,10 +36,10 @@ public final class Constants {
   public static final double controllerDeadzone = 0.1;
 
   //encoder offsets, stil around a 1 degree error
-  public static final double backLeftEncoderOffset = 0.177978515625;
-  public static final double backRightEncoderOffset = 0.167529296875;
-  public static final double frontLeftEncoderOffset = -0.1484375;
-  public static final double frontRightEncoderOffset = 0.07861328125;
+  public static final double backLeftEncoderOffset = 1.07378655151;
+  public static final double backRightEncoderOffset = -0.90044672248;
+  public static final double frontLeftEncoderOffset = -0.15953400194;
+  public static final double frontRightEncoderOffset = 0.09664078963;
   public static final double armGearRatio = 1280.0;
   public static final double clawGearRatio = 396.19;
 

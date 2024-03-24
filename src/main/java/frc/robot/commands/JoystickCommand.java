@@ -34,13 +34,15 @@ public class JoystickCommand extends Command {
   public void execute() {
     double leftY = controller.getLeftY();
     double rightY = controller.getRightY();
+
+    SmartDashboard.putNumber("Claw Angle", clawPivotSubsystem.getClawAngle());
   
 
     if(((leftY < 0 ) || (leftY > 0 )) && Math.abs(leftY) > Constants.controllerDeadzone){
       armSubsystem.setArmSpeed(leftY * Constants.maxArmSpeed);
     } else armSubsystem.setArmSpeed(0);
 
-    if (((rightY < 0 && !clawPivotSubsystem.getLimit()) || (rightY > 0)) && Math.abs(rightY) > Constants.controllerDeadzone) {
+    if (((rightY < 0 && clawPivotSubsystem.getLimit()) || (rightY > 0)) && Math.abs(rightY) > Constants.controllerDeadzone) {
       clawPivotSubsystem.setSpeed(rightY * Constants.maxPivotSpeed);
     } else clawPivotSubsystem.setSpeed(0);
 

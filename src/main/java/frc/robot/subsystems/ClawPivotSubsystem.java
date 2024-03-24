@@ -49,6 +49,10 @@ public boolean getBottomLimit(){
     return falcon1.getPosition().getValueAsDouble() * (180/Math.PI);
   }
 
+  public double getClawAngle() {
+    return getPosition() * 2 * Math.PI / 355.555555;
+  }
+
   public boolean getLimit() {
     return pivotLimit.get();
   }

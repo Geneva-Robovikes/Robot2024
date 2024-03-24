@@ -193,20 +193,19 @@ public class SwerveModule extends SubsystemBase {
      * @return The angle of the wheel in radians.
      */
     public double getCurrentAngle() {
-        //SmartDashboard.putNumber(moduleName+"e", encoder.getPosition().getValueAsDouble() * 2 * Math.PI);
-        //SmartDashboard.putNumber(moduleName+"i", turnMotor.getRotorPosition().getValueAsDouble()/ Constants.swerveTurnGearRatio * 2 * Math.PI);
-        return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio * 2 * Math.PI;
-        //return encoder.getPosition().getValueAsDouble() * 2 * Math.PI;
+        SmartDashboard.putNumber(moduleName+"e", (encoder.getPosition().getValueAsDouble()* 2 * Math.PI) - offset);
+        SmartDashboard.putNumber(moduleName+"i", turnMotor.getRotorPosition().getValueAsDouble()/ Constants.swerveTurnGearRatio * 2 * Math.PI);
+        //return turnMotor.getRotorPosition().getValueAsDouble() / Constants.swerveTurnGearRatio * 2 * Math.PI;
+        return (encoder.getPosition().getValueAsDouble() * 2 * Math.PI) -offset;
         
         
         //return (encoder.getAbsolutePosition().getValueAsDouble() - offset) * 2 * Math.PI;
     }
 
-
-
     public double getAngularVelocity() {
         return encoder.getVelocity().getValueAsDouble() * 2 * Math.PI;
     }
+
 /*
       // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
     private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
