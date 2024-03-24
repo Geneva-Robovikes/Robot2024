@@ -22,6 +22,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.commands.ArmPresetCommand;
 import frc.robot.commands.CameraAlignCommand;
+import frc.robot.commands.AutoIntake;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -63,8 +64,9 @@ public class RobotContainer {
   public final IntakeOppositeCommand intakeOppositeCommand = new IntakeOppositeCommand(clawSubsystem);
   public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
   public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .30);
-  public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 1);
+  public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 2.5);
   public final CameraAlignCommand cameraAlignCommand = new CameraAlignCommand(cameraSubsystem, driveSubsystem, clawPivotSubsystem);
+  public final AutoIntake autoIntake = new AutoIntake(clawSubsystem, 3);
 
   /* ~~~~Presets~~~~ */
   public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -77.0);
@@ -80,8 +82,6 @@ public class RobotContainer {
   private final CommandXboxController controllController = new CommandXboxController(
     OperatorConstants.kControlControllerPort);
 
-    private HttpCamera camera1;
-    private HttpCamera camera2;
 
 
   //private final CommandXboxController controlController = new CommandXboxController(
@@ -96,13 +96,14 @@ public class RobotContainer {
     NamedCommands.registerCommand("Auto Claw Pivot Up", pivotUpPresetCommand);
     NamedCommands.registerCommand("Auto Claw Pivot Down", pivotDownPresetCommand);
     NamedCommands.registerCommand("Shoot", shootCommand);
+    NamedCommands.registerCommand("intake", autoIntake);
+    NamedCommands.registerCommand("intake position", pivotIntakePresetCommand);
 
     //NamedCommands.registerCommand("auto shoot", );
     autoChooser = AutoBuilder.buildAutoChooser();
    // ShuffleboardContainer.add
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    camera1 = new HttpCamera("camera 1", "http://photonvision.local:5800");
-    camera2 = new HttpCamera("camera2", "http://photonvision.local:5800");
+
 
     // Configure the trigger bindings
     configureBindings();
@@ -116,7 +117,9 @@ public class RobotContainer {
         SmartDashboard.putNumber("target pitch", cameraSubsystem.getTarget1Pitch());
         SmartDashboard.putNumber("target yaw", cameraSubsystem.getTarget1Yaw());
         SmartDashboard.putNumber("target id", cameraSubsystem.getTarget1Ids());
-        
+
+        SmartDashboard.putBoolean("limit", clawPivotSubsystem.getLimit());
+
     
 
   }

@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.ArmSubsystem;
@@ -39,9 +40,10 @@ public class JoystickCommand extends Command {
       armSubsystem.setArmSpeed(leftY * Constants.maxArmSpeed);
     } else armSubsystem.setArmSpeed(0);
 
-    if (((rightY < 0 ) || (rightY > 0)) && Math.abs(rightY) > Constants.controllerDeadzone){
+    if (((rightY < 0 && !clawPivotSubsystem.getLimit()) || (rightY > 0)) && Math.abs(rightY) > Constants.controllerDeadzone) {
       clawPivotSubsystem.setSpeed(rightY * Constants.maxPivotSpeed);
     } else clawPivotSubsystem.setSpeed(0);
+
 
 
   }

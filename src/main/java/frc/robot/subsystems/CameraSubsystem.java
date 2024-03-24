@@ -12,6 +12,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonTargetSortMode;
+import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -114,6 +115,14 @@ public class CameraSubsystem extends SubsystemBase {
       return result.getBestTarget().getPitch();
     }
     else return 0.0;
+  }
+
+  public double getTargetDistance(){
+    if (hasTargets()){
+      return PhotonUtils.calculateDistanceToTargetMeters(0, 0, 0, getTarget1Pitch());
+    }
+    else return 0.0;
+    
   }
 
   public int getSpeakerTargetId(){

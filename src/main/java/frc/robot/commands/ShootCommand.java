@@ -31,9 +31,9 @@ public class ShootCommand extends Command {
   @Override
   public void execute() {
     if(timer.get() > delay) {
-      clawSubsystem.setIntake(.80);
+      clawSubsystem.setIntake(1);
     }
-    clawSubsystem.setOuttake(.95);
+    clawSubsystem.setOuttake(.8);
   }
 
   // Called once the command ends or is interrupted.
@@ -45,6 +45,6 @@ public class ShootCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() > 1.25;
+    return timer.get() > 3;
   }
 }

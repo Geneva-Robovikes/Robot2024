@@ -31,19 +31,20 @@ public class ClawSubsystem extends SubsystemBase {
   public ClawSubsystem() {
     intake = new CANSparkMax(53, MotorType.kBrushless);
     outtake1 = new CANSparkMax(52, MotorType.kBrushless);
-    outtake2  = new CANSparkMax(51, MotorType.kBrushless);
+    outtake2 = new CANSparkMax(51, MotorType.kBrushless);
 
     distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
 
     distanceSensor.setAutomaticMode(true);
     distanceSensor.setEnabled(true);
 
-    intake.setIdleMode(IdleMode.kBrake);
-    outtake1.setIdleMode(IdleMode.kBrake);
-    outtake2.setIdleMode(IdleMode.kBrake);
+    intake.setIdleMode(IdleMode.kCoast);
+    outtake1.setIdleMode(IdleMode.kCoast);
+    outtake2.setIdleMode(IdleMode.kCoast);
 
-    outtake2.setInverted(true);
+    outtake1.setInverted(true);
     intake.setInverted(true);
+    outtake2.setInverted(false);
   }
 
   public void setOuttake(double speed){

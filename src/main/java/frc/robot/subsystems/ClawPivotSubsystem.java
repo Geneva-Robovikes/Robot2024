@@ -15,11 +15,14 @@ public class ClawPivotSubsystem extends SubsystemBase {
   TalonFX falcon1;
   PIDController armPidController = new PIDController(1, 0, 0);
 
+  DigitalInput pivotLimit;
+
   //DigitalInput topLimitSwitch;
   //DigitalInput bottomLimitSwitch;
   /** Creates a new Clawpivotsubsystem. */
   public ClawPivotSubsystem() {
     falcon1 = new TalonFX(10);
+    pivotLimit = new DigitalInput(2);
     //topLimitSwitch = new DigitalInput(1);
     //bottomLimitSwitch = new DigitalInput(2);
   }
@@ -44,6 +47,10 @@ public boolean getBottomLimit(){
 
   public double getPositionAsDegrees() {
     return falcon1.getPosition().getValueAsDouble() * (180/Math.PI);
+  }
+
+  public boolean getLimit() {
+    return pivotLimit.get();
   }
 
 
