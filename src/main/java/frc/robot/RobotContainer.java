@@ -20,21 +20,16 @@ import frc.robot.commands.IntakeOppositeCommand;
 import frc.robot.subsystems.ClawPivotSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.commands.ArmPresetCommand;
-
+import frc.robot.commands.CameraAlignCommand;
 import frc.robot.commands.AutoIntake;
-import frc.robot.commands.AutoShootCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-
-import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -73,6 +68,9 @@ public class RobotContainer {
   public final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
   public final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
   public final AutoIntake autoIntake = new AutoIntake(clawSubsystem, 3);
+  public final ClimbCommand raiseClimbArms = new ClimbCommand(climbSubsystem, 5);
+  public final ClimbCommand lowerClimbArms = new ClimbCommand(climbSubsystem, -5);
+
 
   /* ~~~~Presets~~~~ */
   public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -91.0);
@@ -169,7 +167,9 @@ public class RobotContainer {
     controllController.rightTrigger().whileTrue(intakeCommand);
     controllController.leftTrigger().whileTrue(shootCommand);
 
-    
+    controllController.povUp().whileTrue(raiseClimbArms);
+    controllController.povDown().whileTrue(lowerClimbArms);   
+   
     
     //controllController.b().whileTrue(cameraAlignCommand);
 

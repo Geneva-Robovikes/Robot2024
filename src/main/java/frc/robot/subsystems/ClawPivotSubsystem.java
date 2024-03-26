@@ -13,7 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class ClawPivotSubsystem extends SubsystemBase {
   TalonFX falcon1;
-  PIDController armPidController = new PIDController(1, 0, 0);
+  PIDController clawPivotPID = new PIDController(0.1, 0, 0);
 
   DigitalInput pivotLimit;
 
@@ -50,13 +50,16 @@ public boolean getBottomLimit(){
   }
 
   public double getClawAngle() {
-    return getPosition() * 2 * Math.PI / 355.555555;
+    return -getPosition() * 2 * Math.PI / 355.555555;
+  }
+
+  public void setClawAngle(double angle) {
+    falcon1.setVoltage(clawPivotPID.calculate(getClawAngle(), angle));
   }
 
   public boolean getLimit() {
     return pivotLimit.get();
   }
-
 
   @Override
   public void periodic() {
