@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClawSubsystem;
 
-public class ShootCommand extends Command {
+public class AutoShootCommand extends Command {
 
   private final ClawSubsystem clawSubsystem;
 
   private final Timer timer = new Timer();
   private final double delay;
 
-  public ShootCommand(ClawSubsystem clawSubsystem, double delay) {
+  public AutoShootCommand(ClawSubsystem clawSubsystem, double delay) {
     this.clawSubsystem = clawSubsystem;
     this.delay = delay;
 
@@ -33,7 +33,7 @@ public class ShootCommand extends Command {
     if(timer.get() > delay) {
       clawSubsystem.setIntake(1);
     }
-    clawSubsystem.setOuttake(.50);
+    clawSubsystem.setOuttake(.8);
   }
 
   // Called once the command ends or is interrupted.
@@ -45,6 +45,6 @@ public class ShootCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.get() > 4.2;
   }
 }

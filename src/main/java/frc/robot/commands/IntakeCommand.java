@@ -34,7 +34,7 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    try {
+    /*try {
       if(clawSubsystem.getDistanceSensor() < 5.0) { // if the timer is more than the delay
         return true;
       }else { // else
@@ -43,5 +43,7 @@ public class IntakeCommand extends Command {
     } catch (Exception e) {
       return false;
     }
-  }
+  }*/
+  return false;
+}
 }

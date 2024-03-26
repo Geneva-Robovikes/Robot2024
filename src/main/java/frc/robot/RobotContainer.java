@@ -11,7 +11,9 @@ import frc.robot.commands.JoystickCommand;
 import frc.robot.commands.PivotPresetCommand;
 import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AutoForwardsCommand;
-import frc.robot.commands.CameraAlignCommand;
+import frc.robot.commands.ClimbDownCommand;
+import frc.robot.commands.ClimbUpCommand;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.commands.ExtentionCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOppositeCommand;
@@ -21,8 +23,9 @@ import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.commands.ArmPresetCommand;
-import frc.robot.commands.CameraAlignCommand;
+
 import frc.robot.commands.AutoIntake;
+import frc.robot.commands.AutoShootCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -57,23 +60,27 @@ public class RobotContainer {
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public final ClawSubsystem clawSubsystem = new ClawSubsystem();
   public final ArmSubsystem armSubsystem = new ArmSubsystem();
-  public final CameraSubsystem cameraSubsystem = new CameraSubsystem("camera 1", new Transform3d());
+  public final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+ 
 
   
   /* ~~~~Commands~~~~ */
   public final IntakeOppositeCommand intakeOppositeCommand = new IntakeOppositeCommand(clawSubsystem);
   public final AmpShootCommand ampShootCommand = new AmpShootCommand(clawSubsystem);
   public final IntakeCommand intakeCommand = new IntakeCommand(clawSubsystem, -.5, .30);
-  public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 2.5);
-  public final CameraAlignCommand cameraAlignCommand = new CameraAlignCommand(cameraSubsystem, driveSubsystem, clawPivotSubsystem);
+  public final ShootCommand shootCommand = new ShootCommand(clawSubsystem, 3.5);
+  public final AutoShootCommand autoShootCommand = new AutoShootCommand(clawSubsystem, 3.5);
+  public final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
+  public final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
   public final AutoIntake autoIntake = new AutoIntake(clawSubsystem, 3);
 
   /* ~~~~Presets~~~~ */
-  public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -77.0);
+  public final PivotPresetCommand pivotUpPresetCommand = new PivotPresetCommand(clawPivotSubsystem, -91.0);
+  public final PivotPresetCommand pivotUpPresetLongCommand = new PivotPresetCommand(clawPivotSubsystem, -71.0);
   public final PivotPresetCommand pivotDownPresetCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
   public final ArmPresetCommand ampArmCommand = new ArmPresetCommand(armSubsystem, 0);
   public final PivotPresetCommand ampPivotCommand = new PivotPresetCommand(clawPivotSubsystem, 0);
-  public final PivotPresetCommand pivotIntakePresetCommand = new PivotPresetCommand(clawPivotSubsystem, -80.0);
+  public final PivotPresetCommand pivotIntakePresetCommand = new PivotPresetCommand(clawPivotSubsystem, -138.0);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -94,8 +101,9 @@ public class RobotContainer {
 
   public RobotContainer() {
     NamedCommands.registerCommand("Auto Claw Pivot Up", pivotUpPresetCommand);
+    NamedCommands.registerCommand("Auto Claw Pivot Up Long", pivotUpPresetLongCommand);
     NamedCommands.registerCommand("Auto Claw Pivot Down", pivotDownPresetCommand);
-    NamedCommands.registerCommand("Shoot", shootCommand);
+    NamedCommands.registerCommand("Shoot", autoShootCommand);
     NamedCommands.registerCommand("intake", autoIntake);
     NamedCommands.registerCommand("intake position", pivotIntakePresetCommand);
 
@@ -114,9 +122,9 @@ public class RobotContainer {
         SmartDashboard.putNumber("Pivot Position", clawPivotSubsystem.getPosition());
         SmartDashboard.putNumber("Arm1 Positon", armSubsystem.getArmMotor1Position());
         SmartDashboard.putNumber("Arm2 Position", armSubsystem.getArmMotor2Position());
-        SmartDashboard.putNumber("target pitch", cameraSubsystem.getTarget1Pitch());
-        SmartDashboard.putNumber("target yaw", cameraSubsystem.getTarget1Yaw());
-        SmartDashboard.putNumber("target id", cameraSubsystem.getTarget1Ids());
+        //SmartDashboard.putNumber("target pitch", cameraSubsystem.getTarget1Pitch());
+        //SmartDashboard.putNumber("target yaw", cameraSubsystem.getTarget1Yaw());
+        //SmartDashboard.putNumber("target id", cameraSubsystem.getTarget1Ids());
 
         SmartDashboard.putBoolean("limit", clawPivotSubsystem.getLimit());
 
@@ -163,12 +171,15 @@ public class RobotContainer {
 
     
     
-    controllController.b().whileTrue(cameraAlignCommand);
+    //controllController.b().whileTrue(cameraAlignCommand);
 
     controllController.a().whileTrue(pivotUpPresetCommand);
     //controllController.b().whileTrue(ampArmCommand.andThen(ampPivotCommand));
     controllController.y().whileTrue(pivotDownPresetCommand);
-    //controllController.x().whileTrue(pivotIntakePresetCommand);
+    controllController.x().whileTrue(pivotIntakePresetCommand);
+    controllController.b().whileTrue(pivotUpPresetLongCommand);
+    controllController.povUp().whileTrue(climbUpCommand);
+    controllController.povDown().whileTrue(climbDownCommand);
    /* 
    controllController.rightTrigger().whileTrue(intakeCommand);
    controllController.leftTrigger().whileTrue(shootCommand);

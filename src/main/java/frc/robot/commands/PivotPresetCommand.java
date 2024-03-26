@@ -21,7 +21,7 @@ public class PivotPresetCommand extends Command {
 
   public PivotPresetCommand(ClawPivotSubsystem clawPivotSubsystem, double goal) {
     this.clawPivotSubsystem = clawPivotSubsystem;
-    Kp = .012;
+    Kp = .013;
     this.goal = goal;
   }
 

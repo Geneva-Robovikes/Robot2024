@@ -5,11 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ClimbSubsystem;
 
-public class CameraClawAim extends Command {
-  /** Creates a new CameraClawAim. */
-  public CameraClawAim() {
+public class ClimbDownCommand extends Command {
+  private final ClimbSubsystem climbSubsystem;
+  /** Creates a new ClimbCommand. */
+  public ClimbDownCommand(ClimbSubsystem climbSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.climbSubsystem = climbSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -18,11 +21,22 @@ public class CameraClawAim extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(climbSubsystem.getClimbLimit1Bottom()){
+      climbSubsystem.setSpeed1(.3);
+    }
+    if(climbSubsystem.getClimbLimit2Bottom()){
+      climbSubsystem.setSpeed2(.3);
+    }
+  }
+  
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    climbSubsystem.setSpeed1(0);
+    climbSubsystem.setSpeed2(0);
+  }
 
   // Returns true when the command should end.
   @Override

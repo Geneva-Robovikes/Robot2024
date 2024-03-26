@@ -68,12 +68,12 @@ public class TeleopCommand extends Command {
     double vTheta = x2 * maxSpeedTheta;
 
     // Sets the drive speeds
-    driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, isFieldCentric);
+    driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, true);
   }
 
   @Override
   public void end(boolean interrupted) {
-    driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0, isFieldCentric);
+    driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0, true);
   }
 
   @Override

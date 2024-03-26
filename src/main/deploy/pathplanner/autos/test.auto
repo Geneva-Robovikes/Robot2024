@@ -2,15 +2,52 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7518994781213513,
-      "y": 4.578937089400569
+      "x": 2.0,
+      "y": 7.0
     },
-    "rotation": 120.1413855520753
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Claw Pivot Up"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Claw Pivot Down"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake position"
+          }
+        }
+      ]
     }
   },
   "folder": null,

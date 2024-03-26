@@ -24,7 +24,7 @@ public class ClawSubsystem extends SubsystemBase {
   private final CANSparkMax outtake1;
   private final CANSparkMax outtake2;
 
-  private final Rev2mDistanceSensor distanceSensor; 
+
   
   //intake can is 53, shoot is 52 (nNEEDS TO BE NEGATIVE), shoot2 is 51 (POSITIVE)
   /** Creates a new IntakeSubsystem. */
@@ -33,10 +33,7 @@ public class ClawSubsystem extends SubsystemBase {
     outtake1 = new CANSparkMax(52, MotorType.kBrushless);
     outtake2 = new CANSparkMax(51, MotorType.kBrushless);
 
-    distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
-
-    distanceSensor.setAutomaticMode(true);
-    distanceSensor.setEnabled(true);
+   ;
 
     intake.setIdleMode(IdleMode.kCoast);
     outtake1.setIdleMode(IdleMode.kCoast);
@@ -55,7 +52,7 @@ public class ClawSubsystem extends SubsystemBase {
   public void setIntake(double speed){
     intake.set(speed);
   }
-
+/* 
   public double getDistanceSensor() throws Exception {
     boolean isValid = distanceSensor.isRangeValid();  
 
@@ -71,7 +68,7 @@ public class ClawSubsystem extends SubsystemBase {
 
     return distanceSensor.getRange();
   }
-
+*/
   public void disableMotors(){
     intake.set(0);
     outtake1.set(0);
