@@ -25,6 +25,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.commands.ArmPresetCommand;
 import frc.robot.commands.CameraAlignCommand;
+import frc.robot.commands.AutoShootCommand;
 import frc.robot.commands.AutoIntake;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -68,8 +69,7 @@ public class RobotContainer {
   public final ClimbDownCommand climbDownCommand = new ClimbDownCommand(climbSubsystem);
   public final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climbSubsystem);
   public final AutoIntake autoIntake = new AutoIntake(clawSubsystem, 3);
-  public final ClimbCommand raiseClimbArms = new ClimbCommand(climbSubsystem, 5);
-  public final ClimbCommand lowerClimbArms = new ClimbCommand(climbSubsystem, -5);
+
 
 
   /* ~~~~Presets~~~~ */
@@ -167,8 +167,8 @@ public class RobotContainer {
     controllController.rightTrigger().whileTrue(intakeCommand);
     controllController.leftTrigger().whileTrue(shootCommand);
 
-    controllController.povUp().whileTrue(raiseClimbArms);
-    controllController.povDown().whileTrue(lowerClimbArms);   
+    controllController.povUp().whileTrue(climbUpCommand);
+    controllController.povDown().whileTrue(climbDownCommand);   
    
     
     //controllController.b().whileTrue(cameraAlignCommand);
